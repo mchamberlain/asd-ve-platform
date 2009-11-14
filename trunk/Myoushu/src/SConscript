@@ -1,0 +1,65 @@
+#####################
+#     Options       #
+#####################
+
+#TODO: For cross platform compatibility the
+# script must determine the platform and
+# include the corresponding .cpp files.
+
+OPT_SRC = '''
+Application.cpp
+ConcurrentTask.cpp
+Config.cpp
+Console.cpp
+Constants.cpp
+EngineLog.cpp
+Exception.cpp
+GameTask.cpp
+GlobalLocks.cpp
+GUIManager.cpp
+GUIMessage.cpp
+GUITask.cpp
+InputActionManager.cpp
+InputActionCallbackBase.cpp
+InputActionCallback.cpp
+InputDeviceFactory.cpp
+InputMessage.cpp
+InputTask.cpp
+Kernel.cpp
+KernelManager.cpp
+KernelMessage.cpp
+KeyboardOISInputDevice.cpp
+LuaParser.cpp
+Message.cpp
+MessageQueue.cpp
+MouseOISInputDevice.cpp
+MyGUIConsole.cpp
+NotificationManager.cpp
+OutputStream.cpp
+ScriptManager.cpp
+ScriptMessage.cpp
+ScriptTask.cpp
+Task.cpp
+TimerTask.cpp
+TimerTaskMessage.cpp
+VideoTask.cpp
+'''
+
+OPT_SUBDIRS = '''
+'''
+
+import os.path
+import sys
+
+Import('env')
+
+objs = []
+
+for subdir in Split(OPT_SUBDIRS):
+	o = env.SConscript('%s/SConscript' % subdir)
+	objs.append(o)
+
+o = env.BuildObj(env, Split(OPT_SRC) )
+objs.append(o)
+
+Return('objs')

@@ -1,0 +1,35 @@
+import os
+import sys
+
+SRC = '''
+MyoushuLua
+'''
+
+PKG_EXTENSION = '.pkg'
+CPP_EXTENSION = '.cpp'
+H_EXTENSION = '.h'
+TOOL = 'tolua++'
+HEADER_FLAG = '-H'
+OUT_FLAG = '-o'
+
+#os.chdir('../../../../Myoushu/MyoushuLua')
+
+files = []
+for src in Split(SRC):
+	# try:
+		# err = os.spawnve(os.P_WAIT, TOOL, [TOOL, HEADER_FLAG, src + H_EXTENSION, OUT_FLAG, src + CPP_EXTENSION, src + PKG_EXTENSION], os.environ)
+		# if err != 0:
+			# Exit(err)
+			
+	# except:
+		# pass
+		
+	files.append(src + CPP_EXTENSION)
+
+#os.chdir('../../build/' + sys.platform + '/Myoushu/MyoushuLua')
+
+Import('env')
+
+objs = env.BuildObj(env, files)
+
+Return('objs')

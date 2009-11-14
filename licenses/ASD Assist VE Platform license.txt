@@ -1,0 +1,9 @@
+The ASD Assist VE Platform is released under the terms of the GNU Lesser General Public License
+(with some restrictions) as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+The ASD Assist VE Platform is released with the restriction that this work
+and any derivative works (as defined by the GNU Lesser General Public License) may
+only be used for non-commercial purposes.
+
+The GNU Lesser General Public License text can be found in the file lgpl.txt.

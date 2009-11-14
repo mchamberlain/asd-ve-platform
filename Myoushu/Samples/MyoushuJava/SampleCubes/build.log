@@ -1,0 +1,202 @@
+src\Main.java:10: SWIGTYPE_p_p_char() has protected access in MyoushuJava.SWIGTYPE_p_p_char
+		SWIGTYPE_p_p_char args = new SWIGTYPE_p_p_char();
+		                         ^
+src\SampleCubesGameTask.java:17: package Ogre does not exist
+	private Ogre.Camera camera;
+	            ^
+src\SampleCubes.java:33: cannot find symbol
+symbol  : constructor SampleCubesGameTask(int,java.lang.String,long,long)
+location: class SampleCubesGameTask
+		gameTask = new SampleCubesGameTask(Constants.getGAME_TASK_PRIORITY(), "SampleCubesGameTask"
+		           ^
+src\SampleCubesGameTask.java:29: cannot find symbol
+symbol  : constructor GameTask(int,java.lang.String,double,int)
+location: class MyoushuJava.GameTask
+		super(priority, name, 	executionInterval, iterationLimit);
+		^
+src\SampleCubesGameTask.java:40: package Ogre does not exist
+		Ogre.Light light;
+		    ^
+src\SampleCubesGameTask.java:42: cannot find symbol
+symbol  : method get()
+location: class MyoushuJava.SWIGTYPE_p_Poco__AutoPtrT_Myoushu__InputDevice_t
+		InputDevice kbInputDevice = InputDeviceFactory.getSingleton().getInputDevice("keyboard0").get();
+		                                                                                         ^
+src\SampleCubesGameTask.java:43: cannot find symbol
+symbol  : method get()
+location: class MyoushuJava.SWIGTYPE_p_Poco__AutoPtrT_Myoushu__InputDevice_t
+		InputDevice msInputDevice = InputDeviceFactory.getSingleton().getInputDevice("mouse0").get();
+		                                                                                      ^
+src\SampleCubesGameTask.java:73: cannot find symbol
+symbol  : method getSingleton()
+location: class MyoushuJava.SceneFactory
+		scene = SceneFactory.getSingleton().find(Constants.getDEFAULT_SCENE_MANAGER());
+		                    ^
+src\SampleCubesGameTask.java:90: cannot find symbol
+symbol  : variable Ogre
+location: class SampleCubesGameTask
+		scene.setAmbientLight(Ogre.ColourValue(0.1, 0.1, 0.1));
+		                      ^
+src\SampleCubesGameTask.java:91: cannot find symbol
+symbol  : variable Ogre
+location: class SampleCubesGameTask
+		scene.setShadowTechnique(Ogre.SHADOWTYPE_STENCIL_MODULATIVE);
+		                         ^
+src\SampleCubesGameTask.java:93: package Ogre does not exist
+		light.setType(Ogre.Light.LT_POINT);
+		                  ^
+src\SampleCubesGameTask.java:99: cannot find symbol
+symbol  : variable Ogre
+location: class SampleCubesGameTask
+		scene.setGravity(Ogre.Vector3(0, -9.81, 0));
+		                 ^
+src\SampleCubesGameTask.java:105: non-static method init() cannot be referenced from a static context
+		GameTask.init();
+		        ^
+src\SampleCubesGameTask.java:110: cannot find symbol
+symbol  : variable DA_RELEASE
+location: class MyoushuJava.InputMessage
+		if ((message == null) || (message.getDeviceAction() != InputMessage.DA_RELEASE))
+		                                                                   ^
+src\SampleCubesGameTask.java:115: cannot find symbol
+symbol  : variable Ogre
+location: class SampleCubesGameTask
+		if (scene.getShadowTechnique() != Ogre.getSHADOWTYPE_NONE())
+		                                  ^
+src\SampleCubesGameTask.java:117: cannot find symbol
+symbol  : variable Ogre
+location: class SampleCubesGameTask
+			scene.setShadowTechnique(Ogre.getSHADOWTYPE_NONE());
+			                         ^
+src\SampleCubesGameTask.java:121: cannot find symbol
+symbol  : variable Ogre
+location: class SampleCubesGameTask
+			scene.setShadowTechnique(Ogre.getSHADOWTYPE_STENCIL_MODULATIVE());
+			                         ^
+src\SampleCubesGameTask.java:133: cannot find symbol
+symbol  : variable DA_MOVE
+location: class MyoushuJava.InputMessage
+		if ((inputMessage == null) || (inputMessage.getDeviceAction() != InputMessage.DA_MOVE))
+		                                                                             ^
+src\SampleCubesGameTask.java:139: cannot find symbol
+symbol  : variable MICROSECONDS_IN_SECOND
+location: class SampleCubesGameTask
+		timeDelta = ((float) Constants.getINPUT_TASK_EXECUTION_INTERVAL()) / MICROSECONDS_IN_SECOND;
+		                                                                     ^
+src\SampleCubesGameTask.java:145: cannot find symbol
+symbol  : method etDS_BUTTONS_STATE_INDEX()
+location: class MyoushuJava.InputMessage
+		if (inputMessage.getDeviceState(InputMessage.etDS_BUTTONS_STATE_INDEX()) == 1)
+		                                            ^
+src\SampleCubesGameTask.java:148: cannot find symbol
+symbol  : variable Ogre
+location: class SampleCubesGameTask
+			camera.yaw(Ogre.Radian(relX * ROTATE_RATE * timeDelta));
+			           ^
+src\SampleCubesGameTask.java:149: cannot find symbol
+symbol  : variable Ogre
+location: class SampleCubesGameTask
+			camera.pitch(Ogre.Radian(relY * PITCH_RATE * timeDelta));
+			             ^
+src\SampleCubesGameTask.java:154: package Ogre does not exist
+			camera.moveRelative(Ogre.Vector3.UNIT_X * -relX * MOVEMENT_RATE * timeDelta);
+			                        ^
+src\SampleCubesGameTask.java:155: package Ogre does not exist
+			camera.moveRelative(Ogre.Vector3.UNIT_Y * -relY * MOVEMENT_RATE * timeDelta);
+			                        ^
+src\SampleCubesGameTask.java:160: package Ogre does not exist
+			camera.moveRelative(Ogre.Vector3.UNIT_Z * relY * 2.0f * MOVEMENT_RATE * timeDelta);
+			                        ^
+src\SampleCubesGameTask.java:163: package Ogre does not exist
+		camera.moveRelative(-Ogre.Vector3.UNIT_Z * relZ * 2.0f * MOVEMENT_RATE * timeDelta);
+		                         ^
+src\SampleCubesGameTask.java:173: package NxOgre does not exist
+		NxOgre.Pose pose;
+		      ^
+src\SampleCubesGameTask.java:174: package NxOgre does not exist
+		NxOgre.ActorParams actorParams;
+		      ^
+src\SampleCubesGameTask.java:177: cannot find symbol
+symbol  : variable DA_RELEASE
+location: class MyoushuJava.InputMessage
+		if ((inputMessage != null) && (inputMessage.getDeviceAction() == InputMessage.DA_RELEASE))
+		                                                                             ^
+src\SampleCubesGameTask.java:182: cannot find symbol
+symbol  : method getSingleton()
+location: class MyoushuJava.GameObjectFactory
+		GameObjectFactory gameObjectFactory = GameObjectFactory.getSingleton();
+		                                                       ^
+src\SampleCubesGameTask.java:193: package Ogre does not exist
+		Ogre.Vector3 direction = camera.getDirection();
+		    ^
+src\SampleCubesGameTask.java:195: cannot find symbol
+symbol  : class NxVec3
+location: class SampleCubesGameTask
+		actorParams.mLinearVelocity = new NxVec3(direction.x, direction.y, direction.z) * SHOOT_SPEED;
+		                                  ^
+src\SampleCubesGameTask.java:196: cannot find symbol
+symbol  : variable NxOgre
+location: class SampleCubesGameTask
+		pose = NxOgre.Pose(camera.getPosition(), camera.getOrientation());
+		       ^
+src\SampleCubesGameTask.java:197: package NxOgre does not exist
+		gameObjectFactory.makeBody("Cube", "cube.mesh", scene, new NxOgre.CubeShape(2.0), pose, actorParams);
+		                                                                 ^
+src\SampleCubesGameTask.java:205: package NxOgre does not exist
+		NxOgre.Pose pose;
+		      ^
+src\SampleCubesGameTask.java:206: package NxOgre does not exist
+		NxOgre.ActorParams actorParams;
+		      ^
+src\SampleCubesGameTask.java:209: cannot find symbol
+symbol  : variable DA_RELEASE
+location: class MyoushuJava.InputMessage
+		if ((inputMessage != null) && (inputMessage.getDeviceAction() == InputMessage.DA_RELEASE))
+		                                                                             ^
+src\SampleCubesGameTask.java:214: cannot find symbol
+symbol  : method getSingleton()
+location: class MyoushuJava.GameObjectFactory
+		GameObjectFactory gameObjectFactory = GameObjectFactory.getSingleton();
+		                                                       ^
+src\SampleCubesGameTask.java:227: cannot find symbol
+symbol  : variable Ogre
+location: class SampleCubesGameTask
+			pose = Ogre.Vector3(0, CUBE_HEIGHT / 2 + i * (CUBE_HEIGHT), 0);
+			       ^
+src\SampleCubesGameTask.java:228: package NxOgre does not exist
+			gameObjectFactory.makeBody("Cube", "cube.mesh", scene, new NxOgre.CubeShape(2.0), pose, actorParams);
+			                                                                 ^
+src\SampleCubesGameTask.java:237: package NxOgre does not exist
+		NxOgre.Pose pose;
+		      ^
+src\SampleCubesGameTask.java:238: package NxOgre does not exist
+		NxOgre.ActorParams actorParams;
+		      ^
+src\SampleCubesGameTask.java:242: cannot find symbol
+symbol  : variable DA_RELEASE
+location: class MyoushuJava.InputMessage
+		if ((inputMessage != null) && (inputMessage.getDeviceAction() == InputMessage.DA_RELEASE))
+		                                                                             ^
+src\SampleCubesGameTask.java:247: cannot find symbol
+symbol  : method getSingleton()
+location: class MyoushuJava.GameObjectFactory
+		GameObjectFactory gameObjectFactory = GameObjectFactory.getSingleton();
+		                                                       ^
+src\SampleCubesGameTask.java:260: package Ogre does not exist
+			Ogre.Real leftMostCubeCenter = -cubeBaseCnt * CUBE_HEIGHT / 2 + CUBE_HEIGHT / 2;
+			    ^
+src\SampleCubesGameTask.java:261: package Ogre does not exist
+			Ogre.Real yCenter = (PYRAMID_CUBE_BASE_CNT - cubeBaseCnt) / 2 * CUBE_HEIGHT + CUBE_HEIGHT / 2;
+			    ^
+src\SampleCubesGameTask.java:265: operator + cannot be applied to Ogre.Real,int
+				pose = Ogre.Vector3(leftMostCubeCenter + i * CUBE_HEIGHT, yCenter, 0);
+				                    ^
+src\SampleCubesGameTask.java:265: cannot find symbol
+symbol  : variable Ogre
+location: class SampleCubesGameTask
+				pose = Ogre.Vector3(leftMostCubeCenter + i * CUBE_HEIGHT, yCenter, 0);
+				       ^
+src\SampleCubesGameTask.java:266: package NxOgre does not exist
+				gameObjectFactory.makeBody("Cube", "cube.mesh", scene, new NxOgre.CubeShape(2.0), pose, actorParams);
+				                                                                 ^
+49 errors

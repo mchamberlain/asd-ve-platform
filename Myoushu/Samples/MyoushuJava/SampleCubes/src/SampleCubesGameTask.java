@@ -119,6 +119,9 @@ public class SampleCubesGameTask extends GameTask
 		scene.addFloor();
 
 		Singleton_NetworkManager.getSingleton().setNetworkListenBehaviour(new P2PNetworkListenBehaviour());
+                
+                ContentImporter mpDotSceneImporter = Singleton_ContentImporterManager.getSingleton().make("Myoushu::MyoushuDotSceneProcessorImpl", "mpDotSceneImporter");
+                System.out.println( "mpDotSceneImporter " + mpDotSceneImporter );
 
 		// Call GameTask init method
 		super.init();
@@ -235,8 +238,17 @@ public class SampleCubesGameTask extends GameTask
 			+ direction.getZ() * SHOOT_SPEED);
 
 		pose = new Pose(camera.getPosition(), camera.getOrientation());
-		gameObjectFactory.makeBody("Cube", "cube.mesh", scene, new CubeShape(2.0f), pose, actorParams);
+		GameBodyObject body = gameObjectFactory.makeBody("Cube", "cube.mesh", scene, new CubeShape(2.0f), pose, actorParams);
+                KeyValueProperties p = body.getProperties();
+                Value v = new Value();
+                v.set( 10.0f );
+                p.insert( "test", v);
+                Value v2 = p.get( "test" );
+                System.out.println( "From properties, value test: " + v2.getFloat() );
 
+                System.out.println( scene.getActor( body.getName() ) );
+                System.out.println( Utility.castGameBodyObjectToActor(body) );
+                System.out.println( "mass: " + Utility.castGameBodyObjectToActor(body).getMass() );
 		cubeCnt++;
 		//LOG(EngineLog.LM_INFO_APPLICATION, "Cube count: " << cubeCnt);
 	}

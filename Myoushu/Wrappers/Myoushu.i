@@ -147,6 +147,7 @@
 	#include "Random.h"
 	#include "Translation.h"
 	#include "DefaultTranslation.h"
+	#include "Utility.h"
 	
 	// DotScene importer
 //	#include "MyoushuDotSceneProcessorImpl.h"
@@ -326,6 +327,7 @@
 %include "std_string.i"
 %include "std_vector.i"
 %include "std_list.i"
+%include "std_map.i"
 
 %template(VectorInt) std::vector<int>;
 %template(VectorUInt) std::vector<unsigned int>;
@@ -336,6 +338,9 @@
 %template(VectorBool) std::vector<bool>;
 %template(VectorString) std::vector<std::string>;
 %template(VectorValue) std::vector<Myoushu::Value>;
+%template(VectorAutoPtr_Value) std::vector<Poco::AutoPtr<Myoushu::Value> >;
+
+%template(MapStringAutoPtr_Value) std::map<std::string, Poco::AutoPtr<Myoushu::Value> >;
 
 %template(ListInt) std::list<int>;
 %template(ListUInt) std::list<unsigned int>;
@@ -346,6 +351,7 @@
 %template(ListBool) std::list<bool>;
 %template(ListString) std::list<std::string>;
 %template(ListValue) std::list<Myoushu::Value>;
+%template(ListAutoPtr_Value) std::list<Poco::AutoPtr<Myoushu::Value> >;
 
 %include "Poco.i"
 %include "Ogre.i"
@@ -440,6 +446,7 @@
 %template(AutoPtr_VideoTaskMessage) Poco::AutoPtr<Myoushu::VideoTaskMessage>;
 %template(AutoPtr_ContentImporter) Poco::AutoPtr<Myoushu::ContentImporter>;
 %template(AutoPtr_FunctorBase) Poco::AutoPtr<Myoushu::FunctorBase>;
+%template(AutoPtr_Value) Poco::AutoPtr<Myoushu::Value>;
 
 %include "Singleton.h"
 %include "OutputStream.h"
@@ -733,6 +740,15 @@
 %include "FunctorManager.h"
 %include "Translation.h"
 %include "DefaultTranslation.h"
+%include "Utility.h"
+// Template definitions for template function in Utility
+%template(castGameActorObjectToGameObject) Myoushu::Utility::hierarchyCast<Myoushu::GameActorObject, Myoushu::GameObject>;
+%template(castGameActorObjectToActor) Myoushu::Utility::hierarchyCast<Myoushu::GameActorObject, Myoushu::Actor>;
+
+%template(castGameBodyObjectToGameActorObject) Myoushu::Utility::hierarchyCast<Myoushu::GameBodyObject, Myoushu::GameActorObject>;
+%template(castGameBodyObjectToGameObject) Myoushu::Utility::hierarchyCast<Myoushu::GameBodyObject, Myoushu::GameObject>;
+%template(castGameBodyObjectToActor) Myoushu::Utility::hierarchyCast<Myoushu::GameBodyObject, Myoushu::Actor>;
+
 
 // DotScene importer
 //%include "../MyoushuDotScene/include/MyoushuDotSceneProcessorImpl.h"

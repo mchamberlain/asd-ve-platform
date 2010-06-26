@@ -23,6 +23,7 @@ public class SampleCubes extends Application
 		{
 			this.main();
             loadPlugin("MyoushuJava");
+            loadPlugin("myoushuDotScene");
 			init();
 		}
 		catch (java.lang.Exception e)

@@ -107,6 +107,7 @@ namespace Myoushu
 
 			// Create the input manager
 			pl.insert(std::make_pair(std::string("WINDOW"), windowHndStr.str()));
+
 			LOG(EngineLog::LM_INFO_ENGINE, "Initializing OIS");
 			inputManager = OIS::InputManager::createInputSystem(pl);
 

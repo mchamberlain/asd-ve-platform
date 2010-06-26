@@ -136,6 +136,7 @@ namespace Myoushu
 			Ogre::NameValuePairList opts;
 	 		opts["vsync"] = cfg->getBool(Config::VID_VSYNC);
 			opts["title"] = Constants::APPLICATION_TITLE;
+			opts["border"] = "fixed";
 
 			LOG(EngineLog::LM_INFO_ENGINE, "creating Render window.");
 

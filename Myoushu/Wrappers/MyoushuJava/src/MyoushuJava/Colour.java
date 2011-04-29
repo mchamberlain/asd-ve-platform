@@ -82,20 +82,20 @@ public class Colour {
     return (cPtr == 0) ? null : new Colour(cPtr, false);
   }
 
-  /*public static Colour getRed() {
-    long cPtr = MyoushuJNI.Colour_Red_get();
-    return (cPtr == 0) ? null : new Colour(cPtr, false);
-  }
-
-  public static Colour getGreen() {
-    long cPtr = MyoushuJNI.Colour_Green_get();
-    return (cPtr == 0) ? null : new Colour(cPtr, false);
-  }
-
-  public static Colour getBlue() {
-    long cPtr = MyoushuJNI.Colour_Blue_get();
-    return (cPtr == 0) ? null : new Colour(cPtr, false);
-  }*/
+//  public static Colour getRed() {
+//    long cPtr = MyoushuJNI.Colour_Red_get();
+//    return (cPtr == 0) ? null : new Colour(cPtr, false);
+//  }
+//
+//  public static Colour getGreen() {
+//    long cPtr = MyoushuJNI.Colour_Green_get();
+//    return (cPtr == 0) ? null : new Colour(cPtr, false);
+//  }
+//
+//  public static Colour getBlue() {
+//    long cPtr = MyoushuJNI.Colour_Blue_get();
+//    return (cPtr == 0) ? null : new Colour(cPtr, false);
+//  }
 
   public Colour() {
     this(MyoushuJNI.new_Colour__SWIG_0(), true);

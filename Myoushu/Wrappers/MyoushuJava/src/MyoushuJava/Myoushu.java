@@ -30,6 +30,66 @@ public class Myoushu implements MyoushuConstants {
     return MyoushuJNI.Nx_Version_Full_get();
   }
 
+  public static ObjectPool_GUIMessage getObjectPoolGUIMessage() {
+    long cPtr = MyoushuJNI.getObjectPoolGUIMessage();
+    return (cPtr == 0) ? null : new ObjectPool_GUIMessage(cPtr, false);
+  }
+
+  public static ObjectPool_KernelMessage getObjectPoolKernelMessage() {
+    long cPtr = MyoushuJNI.getObjectPoolKernelMessage();
+    return (cPtr == 0) ? null : new ObjectPool_KernelMessage(cPtr, false);
+  }
+
+  public static ObjectPool_AnimationTaskMessage getObjectPoolAnimationTaskMessage() {
+    long cPtr = MyoushuJNI.getObjectPoolAnimationTaskMessage();
+    return (cPtr == 0) ? null : new ObjectPool_AnimationTaskMessage(cPtr, false);
+  }
+
+  public static ObjectPool_ControllerTaskMessage getObjectPoolControllerTaskMessage() {
+    long cPtr = MyoushuJNI.getObjectPoolControllerTaskMessage();
+    return (cPtr == 0) ? null : new ObjectPool_ControllerTaskMessage(cPtr, false);
+  }
+
+  public static ObjectPool_GameLogMessage getObjectPoolGameLogMessage() {
+    long cPtr = MyoushuJNI.getObjectPoolGameLogMessage();
+    return (cPtr == 0) ? null : new ObjectPool_GameLogMessage(cPtr, false);
+  }
+
+  public static ObjectPool_InputDeviceMessage getObjectPoolInputDeviceMessage() {
+    long cPtr = MyoushuJNI.getObjectPoolInputDeviceMessage();
+    return (cPtr == 0) ? null : new ObjectPool_InputDeviceMessage(cPtr, false);
+  }
+
+  public static ObjectPool_InputMessage getObjectPoolInputMessage() {
+    long cPtr = MyoushuJNI.getObjectPoolInputMessage();
+    return (cPtr == 0) ? null : new ObjectPool_InputMessage(cPtr, false);
+  }
+
+  public static ObjectPool_NetworkMessage getObjectPoolNetworkMessage() {
+    long cPtr = MyoushuJNI.getObjectPoolNetworkMessage();
+    return (cPtr == 0) ? null : new ObjectPool_NetworkMessage(cPtr, false);
+  }
+
+  public static ObjectPool_ReplayMessage getObjectPoolReplayMessage() {
+    long cPtr = MyoushuJNI.getObjectPoolReplayMessage();
+    return (cPtr == 0) ? null : new ObjectPool_ReplayMessage(cPtr, false);
+  }
+
+  public static ObjectPool_ScriptMessage getObjectPoolScriptMessage() {
+    long cPtr = MyoushuJNI.getObjectPoolScriptMessage();
+    return (cPtr == 0) ? null : new ObjectPool_ScriptMessage(cPtr, false);
+  }
+
+  public static ObjectPool_TimerTaskMessage getObjectPoolTimerTaskMessage() {
+    long cPtr = MyoushuJNI.getObjectPoolTimerTaskMessage();
+    return (cPtr == 0) ? null : new ObjectPool_TimerTaskMessage(cPtr, false);
+  }
+
+  public static ObjectPool_VideoTaskMessage getObjectPoolVideoTaskMessage() {
+    long cPtr = MyoushuJNI.getObjectPoolVideoTaskMessage();
+    return (cPtr == 0) ? null : new ObjectPool_VideoTaskMessage(cPtr, false);
+  }
+
   public static int luaPrint(SWIGTYPE_p_lua_State L) {
     return MyoushuJNI.luaPrint(SWIGTYPE_p_lua_State.getCPtr(L));
   }

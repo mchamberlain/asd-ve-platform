@@ -14,10 +14,11 @@ RELEASEDIR = PLATFORMDIR .. "release/"
 BUILDFLAGS = { "no-pch", "no-main" }
 
 if (windows) then
-	CGDIR = "C:/Program Files/NVIDIA Corporation/Cg"
+	CGDIR = "$(CG_BIN_PATH)/../"
 	PHYSXPATH = "$(PHYSX_DIR)"
 	OPENALPATH = "$(OPENAL_DIR)"
 	JAVAHOME = "$(JAVA_HOME)"
+	DXSDKPATH = "$(DXSDK_DIR)"
 elseif (linux) then
 	CGDIR = "/usr"
 	OPENALPATH = "/usr/include/OpenAL"
@@ -242,9 +243,9 @@ dopackage("3rdparty/MyGUI_2.0.1_source/mygui_layouteditor.lua")
 dopackage("3rdparty/ogrexmlconverter/ogrexmlconverter.lua")
 
 -- Road to the Moon
-dopackage("Road to the Moon/roadtothemoon.lua")
+dopackage("RoadtotheMoon/roadtothemoon.lua")
 -- Social Skills
-dopackage("Social Skills/socialskills.lua")
+dopackage("SocialSkills/socialskills.lua")
 
 --inline astt binary
 asttBin = newpackage()

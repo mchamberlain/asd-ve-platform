@@ -293,6 +293,37 @@ namespace Myoushu
 		return pGameObject;
 	}
 
+	void Scene::getGameObjectsInCameraView(Ogre::Camera& camera, std::list<GameObject*> &gameObjectList)
+	{
+		// Get a read lock on the Ogre SceneManager
+		Poco::ScopedRWLock lock(rwLockSceneManager, false);
+
+		// Get the camera frustum plane bounded volume
+		std::vector<Ogre::PlaneBoundedVolume> planeBoundedVolumeList;
+		planeBoundedVolumeList.push_back(camera.getCameraToViewportBoxVolume(0, 0, 1, 1, true));
+		// Create the Ogre SceneQuery instance
+		Ogre::PlaneBoundedVolumeListSceneQuery *pQuery = sceneManager->createPlaneBoundedVolumeQuery( planeBoundedVolumeList );
+
+
+		Ogre::SceneQueryResult result = pQuery->execute();
+		
+		// Run through the results of the query and look-up the GameObjects from the GameObjectFactory by name
+		GameObjectFactory& gameObjectFactory = GameObjectFactory::getSingleton();
+		Ogre::SceneQueryResultMovableList::iterator iter;
+		for (iter = result.movables.begin(); iter != result.movables.end(); ++iter)
+		{
+			Ogre::MovableObject *pMovableObject = *iter;
+
+			GameObject *pGameObject = gameObjectFactory.find(pMovableObject->getName());
+			if (pGameObject)
+			{
+				gameObjectList.push_back(pGameObject);
+			}
+		}
+
+		sceneManager->destroyQuery(pQuery);
+	}
+
 	//********** OGRE::SCENEMANAGER METHODS ***********//
 
 	const Ogre::String& Scene::getTypeName(void) const

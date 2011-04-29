@@ -619,6 +619,12 @@ namespace Myoushu
 
 		//clean up singletons
 
+		//LOG(EngineLog::LM_INFO_ENGINE, "Deleting Kernel.");
+		//if (kernel)
+		//{
+		//	delete kernel;
+		//}
+
 		LOG(EngineLog::LM_INFO_ENGINE, "Shutting down plugins.");
 		shutdownPlugins();
 
@@ -660,11 +666,11 @@ namespace Myoushu
 			delete videoTaskManager;
 		}
 
-		//LOG(EngineLog::LM_INFO_ENGINE, "Deleting the NetworkManager.");
-		//if (networkManager)
-		//{
-		//	delete networkManager;
-		//}
+		LOG(EngineLog::LM_INFO_ENGINE, "Deleting the NetworkManager.");
+		if (networkManager)
+		{
+			delete networkManager;
+		}
 
 		LOG(EngineLog::LM_INFO_ENGINE, "Deleting the CollisionManager.");
 		if (collisionManager)

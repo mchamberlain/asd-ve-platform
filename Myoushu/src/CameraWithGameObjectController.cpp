@@ -288,7 +288,8 @@ namespace Myoushu
 				case CA_YAW:
 					// Rotate the camera with the position of the GameObject as origin, around the camera's up direction
 					cameraPosition -= gameObjectPosition;
-					Ogre::Quaternion(Ogre::Radian(-delta), cameraUp).ToRotationMatrix(rotationMatrix);
+					// Do not use the camera up here
+					Ogre::Quaternion(Ogre::Radian(-delta), mpGameObject->getGlobalUpVector().normalisedCopy()).ToRotationMatrix(rotationMatrix);
 					cameraPosition = rotationMatrix * cameraPosition;
 					cameraDirection = rotationMatrix * cameraDirection;
 					cameraPosition += gameObjectPosition;

@@ -17,6 +17,7 @@ public class SampleCubes extends Application
 	public void start()
 	{
 		SampleCubesGameTask gameTask;
+                TestTask testTask;
 
 		// Initialize the Myoushu engine
 		try
@@ -37,9 +38,11 @@ public class SampleCubes extends Application
 		// Create and add the SampleCubesGameTask to the Kernel
 		gameTask = new SampleCubesGameTask(Constants.getGAME_TASK_PRIORITY(), "SampleCubesGameTask"
 			, Constants.getGAME_TASK_EXECUTION_INTERVAL(), Constants.getGAME_TASK_ITERATION_LIMIT());
-		KernelManager.getSingleton().initAllTasks();
+                testTask = new TestTask(Constants.getGAME_TASK_PRIORITY(), "SampleCubesGameTask"
+			, Constants.getGAME_TASK_EXECUTION_INTERVAL(), Constants.getGAME_TASK_ITERATION_LIMIT());
 		KernelManager.getSingleton().addTask(gameTask);
-		gameTask.init();
+		KernelManager.getSingleton().addTask(testTask);
+		KernelManager.getSingleton().initAllTasks();
 
 		run();
 	}

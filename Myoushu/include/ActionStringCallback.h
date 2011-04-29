@@ -134,7 +134,8 @@ namespace Myoushu
 			/** LuaFunctor containing a lua function to use as a callback */
 			Poco::AutoPtr<ActionStringCallbackLuaFunctor> luaFunction;
 			/** Any functor implementation that extends from FunctorBase. */
-			Poco::AutoPtr<FunctorBase> mFunctor;
+			//Poco::AutoPtr<FunctorBase> mFunctor;
+			FunctorBase* mFunctor;
 
 			/** Nullary Constructor */
 			ActionStringCallback();
@@ -259,7 +260,8 @@ namespace Myoushu
 			// We return 1 to indicate that the function was executed and 0 if no execution occured
 			return static_cast<RT>(1);
 		}
-		else if (mFunctor.get() != NULL)
+		//else if (mFunctor.get() != NULL)
+		else if (mFunctor != NULL)
 		{
 			Value v;
 

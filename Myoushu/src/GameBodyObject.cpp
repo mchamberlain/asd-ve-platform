@@ -45,11 +45,11 @@ namespace Myoushu
 		// Get the scene node for the actor, if it exists. Otherwise create one.
 		if (params.mNodeName.length() == 0) 
 		{
-			mNode = mOwner->getSceneManager()->createSceneNode();
+			mNode = mpScene->getOgreSceneManager()->createSceneNode();
 		}
-		else if (!mOwner->getSceneManager()->hasSceneNode(params.mNodeName)) 
+		else if (!mpScene->getOgreSceneManager()->hasSceneNode(params.mNodeName)) 
 		{
-			mNode = mOwner->getSceneManager()->createSceneNode(params.mNodeName);
+			mNode = mpScene->getOgreSceneManager()->createSceneNode(params.mNodeName);
 		}
 
 		mEntity = entity;
@@ -70,7 +70,7 @@ namespace Myoushu
 		// Add the scene node to the scene if it is not already in the scene.
 		if (mNode->getParent() == NULL)
 		{
-			mOwner->getSceneManager()->getRootSceneNode()->addChild(mNode);
+			mpScene->getOgreSceneManager()->getRootSceneNode()->addChild(mNode);
 		}
 
 		// Update the previous position and orientation of this body. This is
@@ -120,11 +120,11 @@ namespace Myoushu
 		// If the node is not yet in the scene, add it to the scene.
 		if (mNode->getParent() == NULL)
 		{
-			mOwner->getSceneManager()->getRootSceneNode()->addChild(mNode);
+			mpScene->getOgreSceneManager()->getRootSceneNode()->addChild(mNode);
 		}
 
 		// Create the entity for this body.
-		mEntity = mOwner->getSceneManager()->createEntity(name, meshName);
+		mEntity = mpScene->getOgreSceneManager()->createEntity(name, meshName);
 		mEntity->setCastShadows(params.mNodeShadows);
 
 		// Attach the entity to the scene node.
@@ -144,15 +144,15 @@ namespace Myoushu
 		// if not create a new one.
 		if (actorParams.mNodeName.length() == 0) 
 		{
-			mNode = mOwner->getSceneManager()->createSceneNode();
+			mNode = mpScene->getOgreSceneManager()->createSceneNode();
 		}
-		else if (!mOwner->getSceneManager()->hasSceneNode(actorParams.mNodeName)) 
+		else if (!mpScene->getOgreSceneManager()->hasSceneNode(actorParams.mNodeName)) 
 		{
-			mNode = mOwner->getSceneManager()->createSceneNode(actorParams.mNodeName);
+			mNode = mpScene->getOgreSceneManager()->createSceneNode(actorParams.mNodeName);
 		}
 
 		// Create the entity for this body.
-		mEntity = mOwner->getSceneManager()->createEntity(name, meshName);
+		mEntity = mpScene->getOgreSceneManager()->createEntity(name, meshName);
 		mEntity->setCastShadows(actorParams.mNodeShadows);
 		// Attach the entity to the scene node.
 		mNode->attachObject(mEntity);
@@ -173,7 +173,7 @@ namespace Myoushu
 		// If the node is not in the scene, add it to the scene.
 		if (mNode->getParent() == NULL)
 		{
-			mOwner->getSceneManager()->getRootSceneNode()->addChild(mNode);
+			mpScene->getOgreSceneManager()->getRootSceneNode()->addChild(mNode);
 		}
 
 		// Update the previous position and orientation of this body. This is
@@ -185,32 +185,43 @@ namespace Myoushu
 
 	GameBodyObject::~GameBodyObject()
 	{
+		LOG_DEBUG( EngineLog::LM_INFO_ENGINE, "GameBodyObject::~GameBodyObject(): name: " << getName() );
+
 		if (mNode == NULL)
 		{
 			return;
 		}
 		
-		mNode->detachObject(mEntity);
-		mOwner->getSceneManager()->destroyEntity(mEntity);
-		mEntity = NULL;
-
-		if ((mNode->numAttachedObjects() == 0) && (mNode->numChildren() == 0))
+		if ( mEntity != NULL )
 		{
-			mOwner->getSceneManager()->destroySceneNode(mNode->getName());
+			//mNode->detachObject(mEntity);
+			mEntity->detatchFromParent();
+		}
+
+		if ((mNode->numAttachedObjects() == 0) && (mNode->numChildren() == 0) && ( mpScene != NULL ) && ( mpScene->getOgreSceneManager() != NULL ) )
+		{
+			mpScene->getOgreSceneManager()->destroySceneNode(mNode->getName());
 			mNode = NULL;
 		}
+
+		if ( ( mpScene != NULL ) && ( mpScene->getOgreSceneManager() != NULL ) )
+		{
+			mpScene->getOgreSceneManager()->destroyEntity(mEntity);
+		}
+		mEntity = NULL;
+
 	}
 
 	void GameBodyObject::createBody(const NxOgre::NxString& meshName)
 	{
 		// Get the scene node for the actor.
-		mNode = mOwner->getSceneManager()->createSceneNode();
+		mNode = mpScene->getOgreSceneManager()->createSceneNode();
 
 		// Add the scene node to the scene
-		mOwner->getSceneManager()->getRootSceneNode()->addChild(mNode);
+		mpScene->getOgreSceneManager()->getRootSceneNode()->addChild(mNode);
 		
 		// Create an entity for the body
-		mEntity = mOwner->getSceneManager()->createEntity(this->getName(), meshName);
+		mEntity = mpScene->getOgreSceneManager()->createEntity(this->getName(), meshName);
 		mNode->attachObject(mEntity);
 
 		// Update the previous position and orientation of this body. This is
@@ -381,7 +392,7 @@ namespace Myoushu
 	void GameBodyObject::restoreCustom(NxOgre::StringPairList spl) 
 	{
 
-		mNode = mOwner->getSceneManager()->getRootSceneNode()->createChildSceneNode();
+		mNode = mpScene->getOgreSceneManager()->getRootSceneNode()->createChildSceneNode();
 
 		for (NxOgre::StringPairList::StringPair sp = spl.begin();spl.hasNext();) 
 		{
@@ -401,7 +412,7 @@ namespace Myoushu
 			if (key == "entity" || key == "node") 
 			{
 
-				Ogre::Entity* entity = mOwner->getSceneManager()->createEntity(
+				Ogre::Entity* entity = mpScene->getOgreSceneManager()->createEntity(
 					mName + "-" + sp.second + "-" + Ogre::StringConverter::toString(mNode->numAttachedObjects()), 
 					sp.second
 				);

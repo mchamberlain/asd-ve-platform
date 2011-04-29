@@ -43,6 +43,10 @@
 	#include "MyGUI_WidgetEvent.h"
 	#include "MyGUI_Widget.h"
 	#include "MyGUI_StaticText.h"
+	#include "MyGUI_Guid.h"
+	#include "MyGUI_ImageInfo.h"
+	#include "MyGUI_ResourceImageSet.h"
+	#include "MyGUI_StaticImage.h"
 	#include "MyGUI_Edit.h"
 	#include "MyGUI_Button.h"
 	#include "MyGUI_Progress.h"
@@ -91,6 +95,12 @@
 		  return SWIGTYPE_p_MyGUI__StaticText;
 	   }
 		 
+	   MyGUI::StaticImage *p8 = dynamic_cast<MyGUI::StaticImage*>(reinterpret_cast<MyGUI::Widget*>(*ptr));
+	   if (p8) {
+		  *ptr = reinterpret_cast<void*>(p8);
+		  return SWIGTYPE_p_MyGUI__StaticImage;
+	   }
+
 	   MyGUI::MultiList *p6 = dynamic_cast<MyGUI::MultiList*>(reinterpret_cast<MyGUI::Widget*>(*ptr));
 	   if (p6) {
 		  *ptr = reinterpret_cast<void*>(p6);
@@ -160,6 +170,10 @@
 %include "../../3rdparty/MyGUI_2.0.1_source/MyGUIEngine/include/MyGUI_WidgetEvent.h"
 %include "../../3rdparty/MyGUI_2.0.1_source/MyGUIEngine/include/MyGUI_Widget.h"
 %include "../../3rdparty/MyGUI_2.0.1_source/MyGUIEngine/include/MyGUI_StaticText.h"
+%include "../../3rdparty/MyGUI_2.0.1_source/MyGUIEngine/include/MyGUI_Guid.h"
+%include "../../3rdparty/MyGUI_2.0.1_source/MyGUIEngine/include/MyGUI_ImageInfo.h"
+%include "../../3rdparty/MyGUI_2.0.1_source/MyGUIEngine/include/MyGUI_ResourceImageSet.h"
+%include "../../3rdparty/MyGUI_2.0.1_source/MyGUIEngine/include/MyGUI_StaticImage.h"
 %ignore MyGUI::Edit::getTextSelect(size_t& s, size_t& e);
 %include "../../3rdparty/MyGUI_2.0.1_source/MyGUIEngine/include/MyGUI_Edit.h"
 %ignore MyGUI::Button::getStaticImage();

@@ -39,24 +39,24 @@ public class AutoPtr_GameLogMessage {
     this(MyoushuJNI.new_AutoPtr_GameLogMessage__SWIG_0(), true);
   }
 
-  public AutoPtr_GameLogMessage(SWIGTYPE_p_Myoushu__GameLogMessage ptr) {
-    this(MyoushuJNI.new_AutoPtr_GameLogMessage__SWIG_1(SWIGTYPE_p_Myoushu__GameLogMessage.getCPtr(ptr)), true);
+  public AutoPtr_GameLogMessage(GameLogMessage ptr) {
+    this(MyoushuJNI.new_AutoPtr_GameLogMessage__SWIG_1(GameLogMessage.getCPtr(ptr), ptr), true);
   }
 
-  public AutoPtr_GameLogMessage(SWIGTYPE_p_Myoushu__GameLogMessage ptr, boolean shared) {
-    this(MyoushuJNI.new_AutoPtr_GameLogMessage__SWIG_2(SWIGTYPE_p_Myoushu__GameLogMessage.getCPtr(ptr), shared), true);
+  public AutoPtr_GameLogMessage(GameLogMessage ptr, boolean shared) {
+    this(MyoushuJNI.new_AutoPtr_GameLogMessage__SWIG_2(GameLogMessage.getCPtr(ptr), ptr, shared), true);
   }
 
   public AutoPtr_GameLogMessage(AutoPtr_GameLogMessage ptr) {
     this(MyoushuJNI.new_AutoPtr_GameLogMessage__SWIG_3(AutoPtr_GameLogMessage.getCPtr(ptr), ptr), true);
   }
 
-  public AutoPtr_GameLogMessage assign(SWIGTYPE_p_Myoushu__GameLogMessage ptr) {
-    return new AutoPtr_GameLogMessage(MyoushuJNI.AutoPtr_GameLogMessage_assign__SWIG_0(swigCPtr, this, SWIGTYPE_p_Myoushu__GameLogMessage.getCPtr(ptr)), false);
+  public AutoPtr_GameLogMessage assign(GameLogMessage ptr) {
+    return new AutoPtr_GameLogMessage(MyoushuJNI.AutoPtr_GameLogMessage_assign__SWIG_0(swigCPtr, this, GameLogMessage.getCPtr(ptr), ptr), false);
   }
 
-  public AutoPtr_GameLogMessage assign(SWIGTYPE_p_Myoushu__GameLogMessage ptr, boolean shared) {
-    return new AutoPtr_GameLogMessage(MyoushuJNI.AutoPtr_GameLogMessage_assign__SWIG_1(swigCPtr, this, SWIGTYPE_p_Myoushu__GameLogMessage.getCPtr(ptr), shared), false);
+  public AutoPtr_GameLogMessage assign(GameLogMessage ptr, boolean shared) {
+    return new AutoPtr_GameLogMessage(MyoushuJNI.AutoPtr_GameLogMessage_assign__SWIG_1(swigCPtr, this, GameLogMessage.getCPtr(ptr), ptr, shared), false);
   }
 
   public AutoPtr_GameLogMessage assign(AutoPtr_GameLogMessage ptr) {
@@ -67,27 +67,69 @@ public class AutoPtr_GameLogMessage {
     MyoushuJNI.AutoPtr_GameLogMessage_swap(swigCPtr, this, AutoPtr_GameLogMessage.getCPtr(ptr), ptr);
   }
 
-  public SWIGTYPE_p_Myoushu__GameLogMessage __deref__() {
+  public GameLogMessage __deref__() {
     long cPtr = MyoushuJNI.AutoPtr_GameLogMessage___deref____SWIG_0(swigCPtr, this);
-    return (cPtr == 0) ? null : new SWIGTYPE_p_Myoushu__GameLogMessage(cPtr, false);
+    return (cPtr == 0) ? null : new GameLogMessage(cPtr, false);
   }
 
-  public SWIGTYPE_p_Myoushu__GameLogMessage __ref__() {
-    return new SWIGTYPE_p_Myoushu__GameLogMessage(MyoushuJNI.AutoPtr_GameLogMessage___ref____SWIG_0(swigCPtr, this), false);
+  public GameLogMessage __ref__() {
+    return new GameLogMessage(MyoushuJNI.AutoPtr_GameLogMessage___ref____SWIG_0(swigCPtr, this), false);
   }
 
-  public SWIGTYPE_p_Myoushu__GameLogMessage get() {
+  public GameLogMessage get() {
     long cPtr = MyoushuJNI.AutoPtr_GameLogMessage_get__SWIG_0(swigCPtr, this);
-    return (cPtr == 0) ? null : new SWIGTYPE_p_Myoushu__GameLogMessage(cPtr, false);
+    return (cPtr == 0) ? null : new GameLogMessage(cPtr, false);
   }
 
   public boolean isNull() {
     return MyoushuJNI.AutoPtr_GameLogMessage_isNull(swigCPtr, this);
   }
 
-  public SWIGTYPE_p_Myoushu__GameLogMessage duplicate() {
+  public GameLogMessage duplicate() {
     long cPtr = MyoushuJNI.AutoPtr_GameLogMessage_duplicate(swigCPtr, this);
-    return (cPtr == 0) ? null : new SWIGTYPE_p_Myoushu__GameLogMessage(cPtr, false);
+    return (cPtr == 0) ? null : new GameLogMessage(cPtr, false);
+  }
+
+  public String getClassName() {
+    return MyoushuJNI.AutoPtr_GameLogMessage_getClassName(swigCPtr, this);
+  }
+
+  public GameLogMessage.GameLogMessageType getMessageType() {
+    return GameLogMessage.GameLogMessageType.swigToEnum(MyoushuJNI.AutoPtr_GameLogMessage_getMessageType(swigCPtr, this));
+  }
+
+  public GameLogEntity getGameLogEntity() {
+    long cPtr = MyoushuJNI.AutoPtr_GameLogMessage_getGameLogEntity(swigCPtr, this);
+    return (cPtr == 0) ? null : new GameLogEntity(cPtr, false);
+  }
+
+  public GameLogEntityEntry getGameLogEntityEntry() {
+    long cPtr = MyoushuJNI.AutoPtr_GameLogMessage_getGameLogEntityEntry(swigCPtr, this);
+    return (cPtr == 0) ? null : new GameLogEntityEntry(cPtr, false);
+  }
+
+  public String getEntityName() {
+    return MyoushuJNI.AutoPtr_GameLogMessage_getEntityName(swigCPtr, this);
+  }
+
+  public ListString getEntryPrimaryKey() {
+    return new ListString(MyoushuJNI.AutoPtr_GameLogMessage_getEntryPrimaryKey(swigCPtr, this), true);
+  }
+
+  public SWIGTYPE_p_uint32_t getActionID() {
+    return new SWIGTYPE_p_uint32_t(MyoushuJNI.AutoPtr_GameLogMessage_getActionID(swigCPtr, this), true);
+  }
+
+  public SWIGTYPE_p_uint32_t serialize(SWIGTYPE_p_void pMem, SWIGTYPE_p_uint32_t size, Serializable.SerializationTarget sTarget) {
+    return new SWIGTYPE_p_uint32_t(MyoushuJNI.AutoPtr_GameLogMessage_serialize__SWIG_0(swigCPtr, this, SWIGTYPE_p_void.getCPtr(pMem), SWIGTYPE_p_uint32_t.getCPtr(size), sTarget.swigValue()), true);
+  }
+
+  public SWIGTYPE_p_uint32_t serialize(SWIGTYPE_p_void pMem, SWIGTYPE_p_uint32_t size) {
+    return new SWIGTYPE_p_uint32_t(MyoushuJNI.AutoPtr_GameLogMessage_serialize__SWIG_1(swigCPtr, this, SWIGTYPE_p_void.getCPtr(pMem), SWIGTYPE_p_uint32_t.getCPtr(size)), true);
+  }
+
+  public SWIGTYPE_p_Poco__Net__IPAddress getCreator() {
+    return new SWIGTYPE_p_Poco__Net__IPAddress(MyoushuJNI.AutoPtr_GameLogMessage_getCreator(swigCPtr, this), true);
   }
 
 }

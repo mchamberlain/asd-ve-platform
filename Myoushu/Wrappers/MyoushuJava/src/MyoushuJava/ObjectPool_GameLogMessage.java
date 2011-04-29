@@ -53,14 +53,14 @@ public class ObjectPool_GameLogMessage {
     return (cPtr == 0) ? null : new PoolObject(cPtr, false);
   }
 
-  public SWIGTYPE_p_Myoushu__GameLogMessage get(boolean autoCreate) {
+  public GameLogMessage get(boolean autoCreate) {
     long cPtr = MyoushuJNI.ObjectPool_GameLogMessage_get__SWIG_0(swigCPtr, this, autoCreate);
-    return (cPtr == 0) ? null : new SWIGTYPE_p_Myoushu__GameLogMessage(cPtr, false);
+    return (cPtr == 0) ? null : new GameLogMessage(cPtr, false);
   }
 
-  public SWIGTYPE_p_Myoushu__GameLogMessage get() {
+  public GameLogMessage get() {
     long cPtr = MyoushuJNI.ObjectPool_GameLogMessage_get__SWIG_1(swigCPtr, this);
-    return (cPtr == 0) ? null : new SWIGTYPE_p_Myoushu__GameLogMessage(cPtr, false);
+    return (cPtr == 0) ? null : new GameLogMessage(cPtr, false);
   }
 
 }

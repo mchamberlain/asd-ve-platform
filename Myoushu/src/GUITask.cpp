@@ -498,6 +498,9 @@ namespace Myoushu
 						widget = mpGUI->createWidgetT(message->getWidgetType(), message->getWidgetType(), message->getPosition().x, message->getPosition().y, message->getSize().x, message->getSize().y, MyGUI::ALIGN_CENTER, "Back", message->getWidgetName());
 					}
 
+					widget->setVisible( message->isVisible() );
+					widget->setCaption( MyGUI::UString( message->getMessage() ) );
+
 					// If it could not be created, log an error
 					if (widget == NULL)
 					{

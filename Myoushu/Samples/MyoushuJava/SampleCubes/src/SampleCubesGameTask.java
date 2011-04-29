@@ -1,7 +1,7 @@
 
 import MyoushuJava.*;
 
-public class SampleCubesGameTask extends GameTask
+public class SampleCubesGameTask extends CallbackTask
 {
 	private static final float ROTATE_RATE = 0.1f;
 	private static final float PITCH_RATE = 0.1f;
@@ -25,6 +25,8 @@ public class SampleCubesGameTask extends GameTask
 	/** Cube cnt */
 	private int cubeCnt;
 
+        private SWIGTYPE_p_uint32_t msgId;
+
 	public SampleCubesGameTask(int priority, String name, long executionInterval, long iterationLimit)
 	{
 		super(priority, name, executionInterval, iterationLimit);
@@ -34,12 +36,40 @@ public class SampleCubesGameTask extends GameTask
 		y = 0;
 		z = 0;
 		cubeCnt = 0;
-	}
+                
+            JavaFunctorFactory functorFactory = JavaFunctorFactory.getSingletonPtr();
+            JavaFunctor f = functorFactory.make( "TestTaskInit" );
+            f.setNumParams(0);
+            f.setMethod(this, "initCallback", "()V");
+            this.setInitCallback(f);
 
-	public void init()
+            f = functorFactory.make( "TestTaskExecute" );
+            f.setNumParams(1);
+            f.setMethod(this, "executeCallback", "(J)V");
+            this.setExecuteCallback(f);
+
+            f = functorFactory.make( "TestTaskKill" );
+            f.setNumParams(0);
+            f.setMethod(this, "killCallback", "()V");
+            this.setKillCallback(f);
+
+            f = functorFactory.make( "TestTaskSuspend" );
+            f.setNumParams(0);
+            f.setMethod(this, "suspendCallback", "()V");
+            this.setSuspendCallback(f);
+
+        }
+
+	public void initCallback()
 	{
 		Light light;
-        JavaFunctorFactory functorFactory = JavaFunctorFactory.getSingletonPtr();
+
+            JavaFunctorFactory functorFactory = JavaFunctorFactory.getSingletonPtr();
+            JavaFunctor f = functorFactory.make( "GUIMessageFunctor2" );
+            f.setNumParams(1);
+            f.setMethod(this, "receiveGUIMessage", "(J)V");
+
+            msgId = Singleton_NotificationManager.getSingleton().addObserverFunctorGUIMessage( f );
 
 		InputDevice kbInputDevice = InputDeviceFactory.getSingleton().getInputDevice("keyboard0").get();
 		InputDevice msInputDevice = InputDeviceFactory.getSingleton().getInputDevice("mouse0").get();
@@ -122,10 +152,42 @@ public class SampleCubesGameTask extends GameTask
                 
                 ContentImporter mpDotSceneImporter = Singleton_ContentImporterManager.getSingleton().make("Myoushu::MyoushuDotSceneProcessorImpl", "mpDotSceneImporter");
                 System.out.println( "mpDotSceneImporter " + mpDotSceneImporter );
-
-		// Call GameTask init method
-		super.init();
 	}
+
+       public void killCallback()
+       {
+            Singleton_NotificationManager.getSingleton().removeObserverFunctorGUIMessage(msgId);
+            Singleton_NotificationManager.getSingleton().removeObserverObject(msgId);
+            Singleton_NotificationManager.getSingleton().removeQueue(msgId);
+       }
+
+       public void suspendCallback()
+       {
+
+       }
+
+       public void executeCallback( long timeDelta )
+       {
+            Singleton_NotificationManager.getSingleton().dispatchQueuedNotifications(msgId);
+
+            ObjectPool_GUIMessage guiMsgPool = Myoushu.getObjectPoolGUIMessage();
+            if ( guiMsgPool != null )
+            {
+                GUIMessage msg = guiMsgPool.get();
+                if ( msg != null )
+                {
+                    msg.setMessageType(GUIMessage.GUIMessageType.GM_UNKNOWN);
+                    msg.setMessage( "SampleCubesGameTask.java" );
+                    Singleton_NotificationManager.getSingleton().queueNotification( msg );
+                }
+           }
+       }
+
+       public void receiveGUIMessage( long msgPtr )
+       {
+            GUIMessage msg = Utility.castMessageToGUIMessage( new Message( msgPtr, false ) );
+            System.out.println( msg.getMessage() );
+       }
 
 	public void toggleShadows(long messagePtr)
 	{

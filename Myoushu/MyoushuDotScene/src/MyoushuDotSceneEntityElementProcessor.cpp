@@ -61,12 +61,17 @@ namespace Myoushu
 		return mpEntity;
 	}
 
-	NxOgre::ShapeBlueprint* MyoushuDotSceneEntityElementProcessor::createCollisionShape(const KeyValueProperties* pKeyValProps, const Ogre::Vector3& boundingBoxSize, const NxOgre::ShapeParams& shapeParams)
+	NxOgre::ShapeBlueprint* MyoushuDotSceneEntityElementProcessor::createCollisionShape(const KeyValueProperties* pKeyValProps, const Ogre::SceneNode *pSceneNode, const Ogre::Entity *pEntity, const Ogre::Vector3& boundingBoxSize, const NxOgre::ShapeParams& cShapeParams)
 	{
 		NxOgre::ShapeBlueprint *pCollisionShape;
 		Ogre::Vector3 scale;
 		std::string collisionShapeProperty;
 		const Value *pVal;
+		NxOgre::ShapeParams shapeParams( cShapeParams );
+		Ogre::Vector3 centroid = pEntity->getBoundingBox().getCenter();
+		Ogre::Vector3 meshScale = pSceneNode->getScale();
+		
+		LOG_DEBUG( EngineLog::LM_INFO_ENGINE, "centroid: " << centroid[ 0 ] << ", " << centroid[ 1 ] << ", " << centroid[ 2 ] );
 
 		// Get the collisionShape key value. If the key does not exist, default it to "cube"
 		pVal = pKeyValProps->get("collisionShape");
@@ -105,6 +110,7 @@ namespace Myoushu
 				}
 			}
 
+			shapeParams.mLocalPose.t.set( centroid[ 0 ] * meshScale[ 0 ], centroid[ 1 ] * meshScale[ 1 ], centroid[ 2 ] * meshScale[ 2 ] );
 			pCollisionShape = new NxOgre::SphereShape(scale.x, shapeParams);
 		}
 		else if (collisionShapeProperty == "capsule")
@@ -140,6 +146,7 @@ namespace Myoushu
 				scale.y = boundingBoxSize.y;
 			}
 
+			shapeParams.mLocalPose.t.set( centroid[ 0 ] * meshScale[ 0 ], centroid[ 1 ] * meshScale[ 1 ], centroid[ 2 ] * meshScale[ 2 ] );
 			pCollisionShape = new NxOgre::CapsuleShape(scale.x, scale.y, shapeParams);
 		}
 		else if (collisionShapeProperty == "convex")
@@ -179,6 +186,51 @@ namespace Myoushu
 				pCollisionShape = new NxOgre::ConvexShape(convexShapeFile, shapeParams);
 			}
 		}
+		else if (collisionShapeProperty == "triangle")
+		{
+			Ogre::FileInfoListPtr pFileInfoList;
+			Ogre::FileInfoList::const_iterator fileInfoIter;
+			std::string triangleShapeFile;
+			bool found;
+
+			// Check if a height is specified
+			pVal = pKeyValProps->get("collisionTriangleFile");
+			if (pVal != NULL)
+			{
+				triangleShapeFile = pVal->getString();
+
+				// Get the full path for the specified collision shape file from Ogre's resource management system
+				found = false;
+				pFileInfoList = Ogre::ResourceGroupManager::getSingleton().findResourceFileInfo(Constants::RG_COLLISION_MESH, triangleShapeFile, false);
+				if (!pFileInfoList.isNull())
+				{
+					for (fileInfoIter = pFileInfoList->begin(); ((!found) && (fileInfoIter != pFileInfoList->end())); ++fileInfoIter)
+					{
+						const Ogre::FileInfo& fileInfo = *fileInfoIter;
+
+						if ((fileInfo.filename == triangleShapeFile) && (fileInfo.archive != NULL))
+						{
+							found = true;
+							triangleShapeFile = fileInfo.archive->getName() + "\\" + fileInfo.path + fileInfo.filename;
+						}
+					}
+				}
+			}
+
+			// If we found the file in the resource manager
+			if (found)
+			{
+				const Ogre::Quaternion& quat = pSceneNode->_getDerivedOrientation();
+				const Ogre::Vector3 &pos = pSceneNode->_getDerivedPosition();
+				const Ogre::Vector3 &s = pSceneNode->_getDerivedScale();
+				NxQuat nxQuat;
+				nxQuat.setXYZW( quat.x, quat.y, quat.z, quat.w );
+				shapeParams.mLocalPose.M.fromQuat( nxQuat );
+				shapeParams.mLocalPose.t.set( pos.x, pos.y, pos.z );
+				shapeParams.mMeshScale.set( s.x, s.y, s.z );
+				pCollisionShape = new NxOgre::TriangleMeshShape(triangleShapeFile, shapeParams);
+			}
+		}
 
 		if ((collisionShapeProperty == "cube") || (pCollisionShape == NULL)) // Default to cube
 		{
@@ -211,6 +263,7 @@ namespace Myoushu
 				scale.z = boundingBoxSize.z;
 			}
 
+			shapeParams.mLocalPose.t.set( centroid[ 0 ] * meshScale[ 0 ], centroid[ 1 ] * meshScale[ 1 ], centroid[ 2 ] * meshScale[ 2 ] );
 			pCollisionShape = new NxOgre::CubeShape(scale.x, scale.y, scale.z, shapeParams);
 		}
 
@@ -279,16 +332,15 @@ namespace Myoushu
 			boxSize.z *= scale.z;
 
 			// Get the collision shape
-			pCollisionShape = createCollisionShape(&keyValueProperties, boxSize, shapeParams);
+			pCollisionShape = createCollisionShape(&keyValueProperties, pSceneNode, pEntity, boxSize, shapeParams);
 
 			actorParams.mNodeName = pSceneNode->getName();
-
 			pGameObject = GameObjectFactory::getSingleton().makeBody(pEntity->getName(), pSceneNode, pEntity, pScene, pCollisionShape, actorParams);
 		}
 		else
 		{
 			// Get the collision shape
-			pCollisionShape = createCollisionShape(&keyValueProperties, boxSize, shapeParams);
+			pCollisionShape = createCollisionShape(&keyValueProperties, pSceneNode, pEntity, boxSize, shapeParams);
 			pGameObject = GameObjectFactory::getSingleton().makeBody(pEntity->getName(), pEntity, pScene, pCollisionShape, NxOgre::Pose(), actorParams);
 		}
 

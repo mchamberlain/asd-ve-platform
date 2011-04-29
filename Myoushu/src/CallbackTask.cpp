@@ -106,8 +106,6 @@ namespace Myoushu
 	{
 		FunctorBase *f;
 
-		LOG(EngineLog::LM_INFO_APPLICATION, "CallbackTasl: call kill functor");
-
 		setState(TS_KILLED);
 
 		f = getKillCallback();

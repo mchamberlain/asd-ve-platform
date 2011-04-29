@@ -86,13 +86,15 @@ namespace Myoushu
 			};
 
 			/** Type definition of the basic std::map template used to map actor and group names to collision callbacks. */
-			typedef std::map<std::string, Poco::AutoPtr<FunctorBase> > CollisionCallbackMap;
+			//typedef std::map<std::string, Poco::AutoPtr<FunctorBase> > CollisionCallbackMap;
+			typedef std::map<std::string, FunctorBase* > CollisionCallbackMap;
 			/** Type defitinion for an iterator over CollisionCallbackMap. */
 			typedef CollisionCallbackMap::iterator CollisionCallbackMapIterator;
 			/** Type defitinion for an const_iterator over CollisionCallbackMap. */
 			typedef CollisionCallbackMap::const_iterator CollisionCallbackMapConstIterator;
 			/** Type defitinion for an entry (key-value pair) in CollisionCallbackMap. */
-			typedef std::pair<std::string, Poco::AutoPtr<FunctorBase> > CollisionCallbackMapEntry;
+			//typedef std::pair<std::string, Poco::AutoPtr<FunctorBase> > CollisionCallbackMapEntry;
+			typedef std::pair<std::string, FunctorBase* > CollisionCallbackMapEntry;
 
 			/** The LuaFunctor type used for Lua based actor-actor collision callbacks. */
 			typedef LuaFunctor<void, 2, GameActorObject*, GameActorObject*> CollisionCallbackLuaFunctor;

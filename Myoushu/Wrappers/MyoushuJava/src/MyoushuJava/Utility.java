@@ -60,6 +60,131 @@ public class Utility {
     return (cPtr == 0) ? null : new Actor(cPtr, false);
   }
 
+  public static NamedInstance castGameObjectToNamedInstance(GameObject pInstance) {
+    long cPtr = MyoushuJNI.Utility_castGameObjectToNamedInstance(GameObject.getCPtr(pInstance), pInstance);
+    return (cPtr == 0) ? null : new NamedInstance(cPtr, false);
+  }
+
+  public static KernelMessage castMessageToKernelMessage(Message pInstance) {
+    long cPtr = MyoushuJNI.Utility_castMessageToKernelMessage(Message.getCPtr(pInstance), pInstance);
+    return (cPtr == 0) ? null : new KernelMessage(cPtr, false);
+  }
+
+  public static AnimationTaskMessage castMessageToAnimationTaskMessage(Message pInstance) {
+    long cPtr = MyoushuJNI.Utility_castMessageToAnimationTaskMessage(Message.getCPtr(pInstance), pInstance);
+    return (cPtr == 0) ? null : new AnimationTaskMessage(cPtr, false);
+  }
+
+  public static ControllerTaskMessage castMessageToControllerTaskMessage(Message pInstance) {
+    long cPtr = MyoushuJNI.Utility_castMessageToControllerTaskMessage(Message.getCPtr(pInstance), pInstance);
+    return (cPtr == 0) ? null : new ControllerTaskMessage(cPtr, false);
+  }
+
+  public static GameLogMessage castMessageToGameLogMessage(Message pInstance) {
+    long cPtr = MyoushuJNI.Utility_castMessageToGameLogMessage(Message.getCPtr(pInstance), pInstance);
+    return (cPtr == 0) ? null : new GameLogMessage(cPtr, false);
+  }
+
+  public static GUIMessage castMessageToGUIMessage(Message pInstance) {
+    long cPtr = MyoushuJNI.Utility_castMessageToGUIMessage(Message.getCPtr(pInstance), pInstance);
+    return (cPtr == 0) ? null : new GUIMessage(cPtr, false);
+  }
+
+  public static InputDeviceMessage castMessageToInputDeviceMessage(Message pInstance) {
+    long cPtr = MyoushuJNI.Utility_castMessageToInputDeviceMessage(Message.getCPtr(pInstance), pInstance);
+    return (cPtr == 0) ? null : new InputDeviceMessage(cPtr, false);
+  }
+
+  public static InputMessage castMessageToInputMessage(Message pInstance) {
+    long cPtr = MyoushuJNI.Utility_castMessageToInputMessage(Message.getCPtr(pInstance), pInstance);
+    return (cPtr == 0) ? null : new InputMessage(cPtr, false);
+  }
+
+  public static NetworkMessage castMessageToNetworkMessage(Message pInstance) {
+    long cPtr = MyoushuJNI.Utility_castMessageToNetworkMessage(Message.getCPtr(pInstance), pInstance);
+    return (cPtr == 0) ? null : new NetworkMessage(cPtr, false);
+  }
+
+  public static ReplayMessage castMessageToReplayMessage(Message pInstance) {
+    long cPtr = MyoushuJNI.Utility_castMessageToReplayMessage(Message.getCPtr(pInstance), pInstance);
+    return (cPtr == 0) ? null : new ReplayMessage(cPtr, false);
+  }
+
+  public static ScriptMessage castMessageToScriptMessage(Message pInstance) {
+    long cPtr = MyoushuJNI.Utility_castMessageToScriptMessage(Message.getCPtr(pInstance), pInstance);
+    return (cPtr == 0) ? null : new ScriptMessage(cPtr, false);
+  }
+
+  public static TimerTaskMessage castMessageToTimerTaskMessage(Message pInstance) {
+    long cPtr = MyoushuJNI.Utility_castMessageToTimerTaskMessage(Message.getCPtr(pInstance), pInstance);
+    return (cPtr == 0) ? null : new TimerTaskMessage(cPtr, false);
+  }
+
+  public static VideoTaskMessage castMessageToVideoTaskMessage(Message pInstance) {
+    long cPtr = MyoushuJNI.Utility_castMessageToVideoTaskMessage(Message.getCPtr(pInstance), pInstance);
+    return (cPtr == 0) ? null : new VideoTaskMessage(cPtr, false);
+  }
+
+  public static ObjectPool_KernelMessage castObjectPoolBaseToObjectPoolKernelMessage(SWIGTYPE_p_Myoushu__ObjectPoolBase pInstance) {
+    long cPtr = MyoushuJNI.Utility_castObjectPoolBaseToObjectPoolKernelMessage(SWIGTYPE_p_Myoushu__ObjectPoolBase.getCPtr(pInstance));
+    return (cPtr == 0) ? null : new ObjectPool_KernelMessage(cPtr, false);
+  }
+
+  public static ObjectPool_AnimationTaskMessage castObjectPoolBaseToObjectPoolAnimationTaskMessage(SWIGTYPE_p_Myoushu__ObjectPoolBase pInstance) {
+    long cPtr = MyoushuJNI.Utility_castObjectPoolBaseToObjectPoolAnimationTaskMessage(SWIGTYPE_p_Myoushu__ObjectPoolBase.getCPtr(pInstance));
+    return (cPtr == 0) ? null : new ObjectPool_AnimationTaskMessage(cPtr, false);
+  }
+
+  public static ObjectPool_ControllerTaskMessage castObjectPoolBaseToObjectPoolControllerTaskMessage(SWIGTYPE_p_Myoushu__ObjectPoolBase pInstance) {
+    long cPtr = MyoushuJNI.Utility_castObjectPoolBaseToObjectPoolControllerTaskMessage(SWIGTYPE_p_Myoushu__ObjectPoolBase.getCPtr(pInstance));
+    return (cPtr == 0) ? null : new ObjectPool_ControllerTaskMessage(cPtr, false);
+  }
+
+  public static ObjectPool_GameLogMessage castObjectPoolBaseToObjectPoolGameLogMessage(SWIGTYPE_p_Myoushu__ObjectPoolBase pInstance) {
+    long cPtr = MyoushuJNI.Utility_castObjectPoolBaseToObjectPoolGameLogMessage(SWIGTYPE_p_Myoushu__ObjectPoolBase.getCPtr(pInstance));
+    return (cPtr == 0) ? null : new ObjectPool_GameLogMessage(cPtr, false);
+  }
+
+  public static ObjectPool_GUIMessage castObjectPoolBaseToObjectPoolGUIMessage(SWIGTYPE_p_Myoushu__ObjectPoolBase pInstance) {
+    long cPtr = MyoushuJNI.Utility_castObjectPoolBaseToObjectPoolGUIMessage(SWIGTYPE_p_Myoushu__ObjectPoolBase.getCPtr(pInstance));
+    return (cPtr == 0) ? null : new ObjectPool_GUIMessage(cPtr, false);
+  }
+
+  public static ObjectPool_InputDeviceMessage castObjectPoolBaseToObjectPoolInputDeviceMessage(SWIGTYPE_p_Myoushu__ObjectPoolBase pInstance) {
+    long cPtr = MyoushuJNI.Utility_castObjectPoolBaseToObjectPoolInputDeviceMessage(SWIGTYPE_p_Myoushu__ObjectPoolBase.getCPtr(pInstance));
+    return (cPtr == 0) ? null : new ObjectPool_InputDeviceMessage(cPtr, false);
+  }
+
+  public static ObjectPool_InputMessage castObjectPoolBaseToObjectPoolInputMessage(SWIGTYPE_p_Myoushu__ObjectPoolBase pInstance) {
+    long cPtr = MyoushuJNI.Utility_castObjectPoolBaseToObjectPoolInputMessage(SWIGTYPE_p_Myoushu__ObjectPoolBase.getCPtr(pInstance));
+    return (cPtr == 0) ? null : new ObjectPool_InputMessage(cPtr, false);
+  }
+
+  public static ObjectPool_NetworkMessage castObjectPoolBaseToObjectPoolNetworkMessage(SWIGTYPE_p_Myoushu__ObjectPoolBase pInstance) {
+    long cPtr = MyoushuJNI.Utility_castObjectPoolBaseToObjectPoolNetworkMessage(SWIGTYPE_p_Myoushu__ObjectPoolBase.getCPtr(pInstance));
+    return (cPtr == 0) ? null : new ObjectPool_NetworkMessage(cPtr, false);
+  }
+
+  public static ObjectPool_ReplayMessage castObjectPoolBaseToObjectPoolReplayMessage(SWIGTYPE_p_Myoushu__ObjectPoolBase pInstance) {
+    long cPtr = MyoushuJNI.Utility_castObjectPoolBaseToObjectPoolReplayMessage(SWIGTYPE_p_Myoushu__ObjectPoolBase.getCPtr(pInstance));
+    return (cPtr == 0) ? null : new ObjectPool_ReplayMessage(cPtr, false);
+  }
+
+  public static ObjectPool_ScriptMessage castObjectPoolBaseToObjectPoolScriptMessage(SWIGTYPE_p_Myoushu__ObjectPoolBase pInstance) {
+    long cPtr = MyoushuJNI.Utility_castObjectPoolBaseToObjectPoolScriptMessage(SWIGTYPE_p_Myoushu__ObjectPoolBase.getCPtr(pInstance));
+    return (cPtr == 0) ? null : new ObjectPool_ScriptMessage(cPtr, false);
+  }
+
+  public static ObjectPool_TimerTaskMessage castObjectPoolBaseToObjectPoolTimerTaskMessage(SWIGTYPE_p_Myoushu__ObjectPoolBase pInstance) {
+    long cPtr = MyoushuJNI.Utility_castObjectPoolBaseToObjectPoolTimerTaskMessage(SWIGTYPE_p_Myoushu__ObjectPoolBase.getCPtr(pInstance));
+    return (cPtr == 0) ? null : new ObjectPool_TimerTaskMessage(cPtr, false);
+  }
+
+  public static ObjectPool_VideoTaskMessage castObjectPoolBaseToObjectPoolVideoTaskMessage(SWIGTYPE_p_Myoushu__ObjectPoolBase pInstance) {
+    long cPtr = MyoushuJNI.Utility_castObjectPoolBaseToObjectPoolVideoTaskMessage(SWIGTYPE_p_Myoushu__ObjectPoolBase.getCPtr(pInstance));
+    return (cPtr == 0) ? null : new ObjectPool_VideoTaskMessage(cPtr, false);
+  }
+
   public Utility() {
     this(MyoushuJNI.new_Utility(), true);
   }

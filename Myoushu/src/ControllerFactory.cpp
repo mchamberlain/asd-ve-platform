@@ -150,8 +150,8 @@ namespace Myoushu
 		// Add the controllers to the ControllerTask
 		ControllerTaskManager& controllerTaskManager = ControllerTaskManager::getSingleton();
 
-		controllerTaskManager.addController(pCharController);
 		controllerTaskManager.addController(pCamController);
+		controllerTaskManager.addController(pCharController);
 	}
 
 	bool ControllerFactory::destroy(Controller *pController) throw (Exception)

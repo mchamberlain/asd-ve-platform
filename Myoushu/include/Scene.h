@@ -170,6 +170,13 @@ namespace Myoushu
 			GameObject* getClosestGameObjectFromRaycast(Ogre::Vector3 position, Ogre::Vector3 direction, Ogre::Real range, NxOgre::RayCaster::ActorFilter filter = NxOgre::RayCaster::AF_NONE);
 
 			/**
+			 * Gets all GameObject instances that are in the camera view.
+			 * @param camera The camera to use.
+			 * @param gameObjectList The list to which to add the GameObjects that are in the camera's view frustum.
+			 */
+			void getGameObjectsInCameraView(Ogre::Camera& camera, std::list<GameObject*> &gameObjectList);
+
+			/**
 			 * Equality operator. Scenes created with the SceneFactory have unique names, so 
 			 * two Scenes are considered equal if they have the same name.
 			 * @param otherScene The Scene instance to test equality with.

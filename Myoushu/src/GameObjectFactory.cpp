@@ -427,7 +427,6 @@ namespace Myoushu
 		iter = begin();
 		endIter = end();
 
-		LOG(EngineLog::LM_INFO_ENGINE, "b find objects in scene");
 		{
 			Poco::ScopedRWLock lock(rwLock, false);
 
@@ -451,10 +450,8 @@ namespace Myoushu
 		// If the remove list is empty, exit the function
 		if (objectsToRemove.empty())
 		{
-			LOG(EngineLog::LM_INFO_ENGINE, "nothing to remove");
 			return;
 		}
-		LOG(EngineLog::LM_INFO_ENGINE, "remove objects");
 		// otherwise remove all GameObjects in the remove list
 		for (removeIter = objectsToRemove.begin(); removeIter != objectsToRemove.end(); )
 		{
@@ -462,7 +459,6 @@ namespace Myoushu
 			// Erase the current element from the list and returns the position of the next element
 			removeIter = objectsToRemove.erase(removeIter);
 		}
-		LOG(EngineLog::LM_INFO_ENGINE, "done");
 	}
 
 } // Myoushu

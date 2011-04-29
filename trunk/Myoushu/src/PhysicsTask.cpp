@@ -51,6 +51,14 @@ namespace Myoushu
 
 		LOG(EngineLog::LM_INFO_ENGINE, "Deleting " << this->getClassName() << ": " << this->getName());
 
+		if (world)
+		{
+			delete world;
+
+			world = NULL;
+			physXDriver = NULL;
+		}
+
 		// Remove the message queue for this class
 		NotificationManager::getSingleton().removeQueue((memUInt) this);
 	}
@@ -70,15 +78,24 @@ namespace Myoushu
 		try
 		{
 			LOG(EngineLog::LM_INFO_ENGINE, "Creating the Physics World.");
+
+			if (world)
+			{
+				delete world;
+
+				world = NULL;
+				physXDriver = NULL;
+			}
+
 			// Create the physics universe
 			world = new NxOgre::World(params);
 			// Get the PhysXDriver instance
 			physXDriver = world->getPhysXDriver();
 			//physXDriver->getSDK()->setParameter(NX_CONTINUOUS_CD, 1.0f);
 			// In DEBUG mode we create a link to the remote debugger
-			#ifdef MYOUSHU_DEBUG
+			//#ifdef MYOUSHU_DEBUG
 				physXDriver->createDebuggerConnection();
-			#endif
+			//#endif
 		}
 		catch (...)
 		{
@@ -137,17 +154,9 @@ namespace Myoushu
 		//NotificationManager::getSingleton().removeObserver<PhysicsTask, TimerTaskMessage>(this, &PhysicsTask::receiveTimerTaskMessage);
 
 		// In DEBUG mode we created a link to the remote debugger, so we must close it
-		#ifdef MYOUSHU_DEBUG
+		//#ifdef MYOUSHU_DEBUG
 			physXDriver->destroyDebuggerConnection();
-		#endif
-
-		if (world)
-		{
-			delete world;
-
-			world = NULL;
-			physXDriver = NULL;
-		}
+		//#endif
 
 		state = TS_KILLED;
 	}

@@ -139,13 +139,17 @@ namespace Myoushu
 
 		protected:
 			/** Functor for the init() function. */
-			Poco::AutoPtr<FunctorBase> mpInitFunctor;
+			//Poco::AutoPtr<FunctorBase> mpInitFunctor;
+			FunctorBase *mpInitFunctor;
 			/** Functor for the suspend() function. */
-			Poco::AutoPtr<FunctorBase> mpSuspendFunctor;
+			//Poco::AutoPtr<FunctorBase> mpSuspendFunctor;
+			FunctorBase *mpSuspendFunctor;
 			/** Functor for the execute() function. */
-			Poco::AutoPtr<FunctorBase> mpExecuteFunctor;
+			//Poco::AutoPtr<FunctorBase> mpExecuteFunctor;
+			FunctorBase *mpExecuteFunctor;
 			/** Functor for the kill() function. */
-			Poco::AutoPtr<FunctorBase> mpKillFunctor;
+			//Poco::AutoPtr<FunctorBase> mpKillFunctor;
+			FunctorBase *mpKillFunctor;
 	};
 
 	inline void CallbackTask::setInitCallback(FunctorBase *pFunctor)

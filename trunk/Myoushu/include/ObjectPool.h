@@ -39,6 +39,7 @@ along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 #include "Singleton.h"
 #include "ObjectPoolBase.h"
 #include "Exception.h"
+#include "EngineLog.h"
 
 namespace Myoushu
 {
@@ -68,8 +69,11 @@ namespace Myoushu
 			 *							 can be in the pool at any given time. If
 			 *							 the value is zero, the pool size defaults to 10.
 			 */
-			ObjectPool(unsigned int maxNumberOfObjects = 10) : maxNumberOfObjects(maxNumberOfObjects), curPoolSize(0)
+			ObjectPool(unsigned int maxNumberOfObjects = 10) : Ogre::Singleton< ObjectPool< T > >(), maxNumberOfObjects(maxNumberOfObjects), curPoolSize(0)
 			{
+
+				LOG( EngineLog::LM_INFO_ENGINE, "create object pool" );
+
 				if (maxNumberOfObjects = 0)
 				{
 					this->maxNumberOfObjects = 10;
@@ -86,6 +90,8 @@ namespace Myoushu
 				ManagedInstancesIterator managedInstancesIter;
 				T *object;
 				unsigned int i;
+
+				LOG( EngineLog::LM_INFO_ENGINE, "destroying object pool" );
 
 				// Unregister this object pool by the class name of the objects it creates
 				ObjectPoolBase::unregisterObjectPool(NamedObject<T>::getStaticClassName());

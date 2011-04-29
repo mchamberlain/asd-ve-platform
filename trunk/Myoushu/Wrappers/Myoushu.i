@@ -105,6 +105,59 @@
 	#include "ObjectFactory.h"
 	#include "ObjectPool.h"
 	#include "ObjectPoolBase.h"
+	
+	namespace Myoushu
+	{
+		static ObjectPool< GUIMessage >* getObjectPoolGUIMessage()
+		{
+			return dynamic_cast< ObjectPool< GUIMessage >* >( ObjectPoolBase::getObjectPoolFromClassName( NamedObject< GUIMessage >::getStaticClassName() ) );
+		}
+		static ObjectPool< KernelMessage >* getObjectPoolKernelMessage()
+		{
+			return dynamic_cast< ObjectPool< KernelMessage >* >( ObjectPoolBase::getObjectPoolFromClassName( NamedObject< KernelMessage >::getStaticClassName() ) );
+		}
+		static ObjectPool< AnimationTaskMessage >* getObjectPoolAnimationTaskMessage()
+		{
+			return dynamic_cast< ObjectPool< AnimationTaskMessage >* >( ObjectPoolBase::getObjectPoolFromClassName( NamedObject< AnimationTaskMessage >::getStaticClassName() ) );
+		}
+		static ObjectPool< ControllerTaskMessage >* getObjectPoolControllerTaskMessage()
+		{
+			return dynamic_cast< ObjectPool< ControllerTaskMessage >* >( ObjectPoolBase::getObjectPoolFromClassName( NamedObject< ControllerTaskMessage >::getStaticClassName() ) );
+		}
+		static ObjectPool< GameLogMessage >* getObjectPoolGameLogMessage()
+		{
+			return dynamic_cast< ObjectPool< GameLogMessage >* >( ObjectPoolBase::getObjectPoolFromClassName( NamedObject< GameLogMessage >::getStaticClassName() ) );
+		}
+		static ObjectPool< InputDeviceMessage >* getObjectPoolInputDeviceMessage()
+		{
+			return dynamic_cast< ObjectPool< InputDeviceMessage >* >( ObjectPoolBase::getObjectPoolFromClassName( NamedObject< InputDeviceMessage >::getStaticClassName() ) );
+		}
+		static ObjectPool< InputMessage >* getObjectPoolInputMessage()
+		{
+			return dynamic_cast< ObjectPool< InputMessage >* >( ObjectPoolBase::getObjectPoolFromClassName( NamedObject< InputMessage >::getStaticClassName() ) );
+		}
+		static ObjectPool< NetworkMessage >* getObjectPoolNetworkMessage()
+		{
+			return dynamic_cast< ObjectPool< NetworkMessage >* >( ObjectPoolBase::getObjectPoolFromClassName( NamedObject< NetworkMessage >::getStaticClassName() ) );
+		}
+		static ObjectPool< ReplayMessage >* getObjectPoolReplayMessage()
+		{
+			return dynamic_cast< ObjectPool< ReplayMessage >* >( ObjectPoolBase::getObjectPoolFromClassName( NamedObject< ReplayMessage >::getStaticClassName() ) );
+		}
+		static ObjectPool< ScriptMessage >* getObjectPoolScriptMessage()
+		{
+			return dynamic_cast< ObjectPool< ScriptMessage >* >( ObjectPoolBase::getObjectPoolFromClassName( NamedObject< ScriptMessage >::getStaticClassName() ) );
+		}
+		static ObjectPool< TimerTaskMessage >* getObjectPoolTimerTaskMessage()
+		{
+			return dynamic_cast< ObjectPool< TimerTaskMessage >* >( ObjectPoolBase::getObjectPoolFromClassName( NamedObject< TimerTaskMessage >::getStaticClassName() ) );
+		}
+		static ObjectPool< VideoTaskMessage >* getObjectPoolVideoTaskMessage()
+		{
+			return dynamic_cast< ObjectPool< VideoTaskMessage >* >( ObjectPoolBase::getObjectPoolFromClassName( NamedObject< VideoTaskMessage >::getStaticClassName() ) );
+		}
+	}
+	
 	#include "OISInputDevice.h"
 	#include "OutputStream.h"
 	#include "P2PNetworkListenBehaviour.h"
@@ -324,6 +377,12 @@
 	DYNAMIC_CAST(SWIGTYPE_p_Myoushu__NamedInstance, _cast_Myoushu__NamedInstance);
 #endif
 
+typedef unsigned int uint32;
+typedef unsigned short uint16;
+typedef unsigned char uint8;
+
+typedef uint32 memUInt;
+
 %include "std_string.i"
 %include "std_vector.i"
 %include "std_list.i"
@@ -339,6 +398,7 @@
 %template(VectorString) std::vector<std::string>;
 %template(VectorValue) std::vector<Myoushu::Value>;
 %template(VectorAutoPtr_Value) std::vector<Poco::AutoPtr<Myoushu::Value> >;
+%template(VectorGameObject) std::vector<Myoushu::GameObject*>;
 
 %template(MapStringAutoPtr_Value) std::map<std::string, Poco::AutoPtr<Myoushu::Value> >;
 
@@ -352,6 +412,7 @@
 %template(ListString) std::list<std::string>;
 %template(ListValue) std::list<Myoushu::Value>;
 %template(ListAutoPtr_Value) std::list<Poco::AutoPtr<Myoushu::Value> >;
+%template(ListGameObject) std::list<Myoushu::GameObject*>;
 
 %include "Poco.i"
 %include "Ogre.i"
@@ -525,12 +586,12 @@
 
 %ignore Myoushu::Value::getValue() const;
 
+%include "Message.h"
 %include "Value.h"
 
 %ignore Myoushu::FunctorBase::setParameter(unsigned int, Value);
 
 %include "FunctorBase.h"
-%include "Message.h"
 %include "TimerTaskMessage.h"
 %apply SWIGTYPE *DISOWN {Myoushu::Value* value};
 %include "KeyValueProperties.h"
@@ -552,8 +613,28 @@
 %template(NamedObjectFactory_ContentImporter) Myoushu::NamedObjectFactory<Myoushu::ContentImporter>;
 %template(NamedObjectFactory_FunctorBase) Myoushu::NamedObjectFactory<Myoushu::FunctorBase>;
 
-// %include "ObjectPoolBase.h"
+%include "GameLogEntityEntry.h"
+%include "GameLogEntity.h"
+%include "GameLogMessage.h"
+
+//%include "ObjectPoolBase.h"
 %include "ObjectPool.h"
+
+namespace Myoushu
+{
+	static ObjectPool< GUIMessage >* getObjectPoolGUIMessage();
+	static ObjectPool< KernelMessage >* getObjectPoolKernelMessage();
+	static ObjectPool< AnimationTaskMessage >* getObjectPoolAnimationTaskMessage();
+	static ObjectPool< ControllerTaskMessage >* getObjectPoolControllerTaskMessage();
+	static ObjectPool< GameLogMessage >* getObjectPoolGameLogMessage();
+	static ObjectPool< InputDeviceMessage >* getObjectPoolInputDeviceMessage();
+	static ObjectPool< InputMessage >* getObjectPoolInputMessage();
+	static ObjectPool< NetworkMessage >* getObjectPoolNetworkMessage();
+	static ObjectPool< ReplayMessage >* getObjectPoolReplayMessage();
+	static ObjectPool< ScriptMessage >* getObjectPoolScriptMessage();
+	static ObjectPool< TimerTaskMessage >* getObjectPoolTimerTaskMessage();
+	static ObjectPool< VideoTaskMessage >* getObjectPoolVideoTaskMessage();
+}
 
 %template(ObjectPool_AnimationTaskMessage) Myoushu::ObjectPool<Myoushu::AnimationTaskMessage>;
 %template(ObjectPool_KernelMessage) Myoushu::ObjectPool<Myoushu::KernelMessage>;
@@ -749,6 +830,33 @@
 %template(castGameBodyObjectToGameObject) Myoushu::Utility::hierarchyCast<Myoushu::GameBodyObject, Myoushu::GameObject>;
 %template(castGameBodyObjectToActor) Myoushu::Utility::hierarchyCast<Myoushu::GameBodyObject, Myoushu::Actor>;
 
+%template(castGameObjectToNamedInstance) Myoushu::Utility::hierarchyCast<Myoushu::GameObject, Myoushu::NamedInstance>;
+
+%template(castMessageToKernelMessage) Myoushu::Utility::hierarchyCast<Myoushu::Message, Myoushu::KernelMessage>;
+%template(castMessageToAnimationTaskMessage) Myoushu::Utility::hierarchyCast<Myoushu::Message, Myoushu::AnimationTaskMessage>;
+%template(castMessageToControllerTaskMessage) Myoushu::Utility::hierarchyCast<Myoushu::Message, Myoushu::ControllerTaskMessage>;
+%template(castMessageToGameLogMessage) Myoushu::Utility::hierarchyCast<Myoushu::Message, Myoushu::GameLogMessage>;
+%template(castMessageToGUIMessage) Myoushu::Utility::hierarchyCast<Myoushu::Message, Myoushu::GUIMessage>;
+%template(castMessageToInputDeviceMessage) Myoushu::Utility::hierarchyCast<Myoushu::Message, Myoushu::InputDeviceMessage>;
+%template(castMessageToInputMessage) Myoushu::Utility::hierarchyCast<Myoushu::Message, Myoushu::InputMessage>;
+%template(castMessageToNetworkMessage) Myoushu::Utility::hierarchyCast<Myoushu::Message, Myoushu::NetworkMessage>;
+%template(castMessageToReplayMessage) Myoushu::Utility::hierarchyCast<Myoushu::Message, Myoushu::ReplayMessage>;
+%template(castMessageToScriptMessage) Myoushu::Utility::hierarchyCast<Myoushu::Message, Myoushu::ScriptMessage>;
+%template(castMessageToTimerTaskMessage) Myoushu::Utility::hierarchyCast<Myoushu::Message, Myoushu::TimerTaskMessage>;
+%template(castMessageToVideoTaskMessage) Myoushu::Utility::hierarchyCast<Myoushu::Message, Myoushu::VideoTaskMessage>;
+
+%template(castObjectPoolBaseToObjectPoolKernelMessage) Myoushu::Utility::hierarchyCast<Myoushu::ObjectPoolBase, Myoushu::ObjectPool< Myoushu::KernelMessage> >;
+%template(castObjectPoolBaseToObjectPoolAnimationTaskMessage) Myoushu::Utility::hierarchyCast<Myoushu::ObjectPoolBase, Myoushu::ObjectPool< Myoushu::AnimationTaskMessage> >;
+%template(castObjectPoolBaseToObjectPoolControllerTaskMessage) Myoushu::Utility::hierarchyCast<Myoushu::ObjectPoolBase, Myoushu::ObjectPool< Myoushu::ControllerTaskMessage> >;
+%template(castObjectPoolBaseToObjectPoolGameLogMessage) Myoushu::Utility::hierarchyCast<Myoushu::ObjectPoolBase, Myoushu::ObjectPool< Myoushu::GameLogMessage> >;
+%template(castObjectPoolBaseToObjectPoolGUIMessage) Myoushu::Utility::hierarchyCast<Myoushu::ObjectPoolBase, Myoushu::ObjectPool< Myoushu::GUIMessage> >;
+%template(castObjectPoolBaseToObjectPoolInputDeviceMessage) Myoushu::Utility::hierarchyCast<Myoushu::ObjectPoolBase, Myoushu::ObjectPool< Myoushu::InputDeviceMessage> >;
+%template(castObjectPoolBaseToObjectPoolInputMessage) Myoushu::Utility::hierarchyCast<Myoushu::ObjectPoolBase, Myoushu::ObjectPool< Myoushu::InputMessage> >;
+%template(castObjectPoolBaseToObjectPoolNetworkMessage) Myoushu::Utility::hierarchyCast<Myoushu::ObjectPoolBase, Myoushu::ObjectPool< Myoushu::NetworkMessage> >;
+%template(castObjectPoolBaseToObjectPoolReplayMessage) Myoushu::Utility::hierarchyCast<Myoushu::ObjectPoolBase, Myoushu::ObjectPool< Myoushu::ReplayMessage> >;
+%template(castObjectPoolBaseToObjectPoolScriptMessage) Myoushu::Utility::hierarchyCast<Myoushu::ObjectPoolBase, Myoushu::ObjectPool< Myoushu::ScriptMessage> >;
+%template(castObjectPoolBaseToObjectPoolTimerTaskMessage) Myoushu::Utility::hierarchyCast<Myoushu::ObjectPoolBase, Myoushu::ObjectPool< Myoushu::TimerTaskMessage> >;
+%template(castObjectPoolBaseToObjectPoolVideoTaskMessage) Myoushu::Utility::hierarchyCast<Myoushu::ObjectPoolBase, Myoushu::ObjectPool< Myoushu::VideoTaskMessage> >;
 
 // DotScene importer
 //%include "../MyoushuDotScene/include/MyoushuDotSceneProcessorImpl.h"

@@ -6,8 +6,11 @@
 
 #include <iostream>
 
+#include "Poco/RefCountedObject.h"
+
 #include "JavaFunctor.h"
 #include "EngineLog.h"
+#include "Message.h"
 
 namespace Myoushu
 {
@@ -46,8 +49,10 @@ namespace Myoushu
 			if (mObj != NULL)
 			{
 				pEnv->DeleteGlobalRef(mObj);
+				mObj = NULL;
 			}
 			mpJVM->DetachCurrentThread();
+			mpJVM = NULL;
 		}
 	}
 
@@ -79,27 +84,7 @@ namespace Myoushu
 
 	void JavaFunctor::setParameter(unsigned int index, Value v) throw (Exception)
 	{
-		NamedInstance *pNamedInstance;
-		void *pVoid;
-		jvalue val;
-
-		// Pointers to class instances are converted to jlong. It is the responsibility of the Java app implementor to create Java proxy instances
-		// from these pointers. (not difficult, just new Object(pointer, false); Where the false indicates that Java side does not own the pointer).
-		if (v.getType() == Value::VT_NAMED_INSTANCE)
-		{
-			v.get(pNamedInstance);
-			val.j = reinterpret_cast<jlong>(pNamedInstance);
-		}
-		else if (v.getType() == Value::VT_VOID_PTR)
-		{
-			v.get(pVoid);
-			val.j = reinterpret_cast<jlong>(pVoid);
-		}
-		else
-		{
-			v.get(val);
-		}
-		setParameter(index, val);
+		setParameter(index, v.getJValue( true ));
 	}
 
 	void JavaFunctor::setMethod(JavaVM *pJVM, jclass cls, jobject obj, jmethodID methodID)

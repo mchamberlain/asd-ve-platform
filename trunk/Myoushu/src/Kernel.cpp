@@ -331,6 +331,8 @@ namespace Myoushu
 			}
 
 		} while (isExecuting());
+
+		killAllTasks();
 	}
 
 	void Kernel::initAllTasks()
@@ -377,6 +379,21 @@ namespace Myoushu
 			it = tasksToRemove.erase(it);
 			// Remove the task from the kernel
 			removeTask(task);
+		}
+	}
+
+	void Kernel::killAllTasks()
+	{
+		TaskPoolIter it;
+
+		Poco::ScopedRWLock lock(rwLock, false);
+
+		for (it = taskPool.begin(); it != taskPool.end(); ++it )
+		{
+			if ((*it)->getState() != Task::TS_KILLED)
+			{
+				(*it)->kill();
+			}
 		}
 	}
 

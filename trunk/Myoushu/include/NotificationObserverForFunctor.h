@@ -131,7 +131,9 @@ namespace Myoushu
 		{
 			Value val;
 
-			val.set(reinterpret_cast<const void*>(message.get()), true);
+			//val.setConstVoidPtr( reinterpret_cast<const void*>( message.get() ), true);
+			//val.setConstRefCountedObjectPtr( static_cast< const Poco::RefCountedObject* >( message.get() ), true );
+			val.setConstMessagePtr( static_cast< const Message* >( message.get() ), true );
 			pFunctor->setParameter(0, val);
 		}
 

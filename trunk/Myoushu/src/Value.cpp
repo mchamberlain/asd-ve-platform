@@ -31,18 +31,18 @@ along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace Myoushu
 {
-	Value::Value() : mValue(), mType(VT_UNKNOWN)
+	Value::Value() : mValue(), mType(VT_UNKNOWN), mAutoPtr(false)
 	{
 	}
 
-	Value::Value(const Value& v)
+	Value::Value(const Value& v) : mValue(), mType(VT_UNKNOWN), mAutoPtr(false)
 	{
-		mType = v.getType();
-		mValue = v.getValue();
+		(*this) = v;
 	}
 
 	Value::~Value()
 	{
+		clearValue();
 	}
 
 	void Value::clearValue()
@@ -60,6 +60,7 @@ namespace Myoushu
 
 		mType = VT_UNKNOWN;
 		mValue.mDouble = 0.0;
+		mAutoPtr = false;
 	}
 
 	void Value::set(char value)
@@ -244,6 +245,49 @@ namespace Myoushu
 		}
 	}
 
+	void Value::set(const Message *value, bool autoPtr)
+	{
+		clearValue();
+
+		// Acquire a write lock
+		Poco::ScopedRWLock lock(rwLock, true);
+
+		mType = VT_CONST_MESSAGE;
+		mValue.mConstMessage = value;
+
+		if (autoPtr)
+		{
+			Poco::ScopedRWLock lock(mRWLockAutoPtr, true);
+			mAutoPtr = true;
+
+			const Poco::RefCountedObject *pRefCountedObj = reinterpret_cast<const Poco::RefCountedObject*>(mValue.mConstMessage);
+			pRefCountedObj->duplicate();
+		}
+	}
+
+	void Value::set(const Poco::RefCountedObject *value, bool autoPtr)
+	{
+		clearValue();
+
+		// Acquire a write lock
+		Poco::ScopedRWLock lock(rwLock, true);
+
+		mType = VT_CONST_REF_COUNTED_OBJECT;
+		mValue.mConstRefCountedObj = value;
+
+		if (autoPtr)
+		{
+			Poco::ScopedRWLock lock(mRWLockAutoPtr, true);
+			mAutoPtr = true;
+
+			if ( value )
+			{
+				value->duplicate();
+			}
+		}
+
+	}
+
 	void Value::set(const void *value, bool autoPtr)
 	{
 		clearValue();
@@ -260,7 +304,10 @@ namespace Myoushu
 			mAutoPtr = true;
 
 			const Poco::RefCountedObject *pRefCountedObj = reinterpret_cast<const Poco::RefCountedObject*>(mValue.mConstVoidPtr);
-			pRefCountedObj->duplicate();
+			if ( pRefCountedObj )
+			{
+				pRefCountedObj->duplicate();
+			}
 		}
 
 	}
@@ -452,6 +499,32 @@ namespace Myoushu
 		if (mType == VT_CONST_NAMED_INSTANCE)
 		{
 			value = mValue.mConstNamedInstance;
+			return true;
+		}
+
+		return false;
+	}
+
+	bool Value::get(const Message* &value) const
+	{
+		Poco::ScopedRWLock lock(rwLock, false);
+
+		if (mType == VT_CONST_MESSAGE)
+		{
+			value = mValue.mConstMessage;
+			return true;
+		}
+
+		return false;
+	}
+
+	bool Value::get(const Poco::RefCountedObject* &value) const
+	{
+		Poco::ScopedRWLock lock(rwLock, false);
+
+		if (mType == VT_CONST_REF_COUNTED_OBJECT)
+		{
+			value = mValue.mConstRefCountedObj;
 			return true;
 		}
 
@@ -652,6 +725,30 @@ namespace Myoushu
 		return mValue.mConstNamedInstance;
 	}
 
+	const Message* Value::getConstMessage() const throw (Exception)
+	{
+		Poco::ScopedRWLock lock(rwLock, false);
+
+		if (mType != VT_CONST_MESSAGE)
+		{
+			throw Exception(Exception::E_INVALID_PARAMETERS, "Value::getConstMessage(): value is not a const Message*!");
+		}
+
+		return mValue.mConstMessage;
+	}
+
+	const Poco::RefCountedObject* Value::getConstRefCountedObject() const throw (Exception)
+	{
+		Poco::ScopedRWLock lock(rwLock, false);
+
+		if (mType != VT_CONST_REF_COUNTED_OBJECT)
+		{
+			throw Exception(Exception::E_INVALID_PARAMETERS, "Value::getConstRefCountedObject(): value is not a const Poco::RefCountedObject*!");
+		}
+
+		return mValue.mConstRefCountedObj;
+	}
+
 	const void* Value::getConstVoidPtr() const throw (Exception)
 	{
 		Poco::ScopedRWLock lock(rwLock, false);
@@ -664,16 +761,134 @@ namespace Myoushu
 		return mValue.mConstVoidPtr;
 	}
 
-	jvalue Value::getJValue() const throw (Exception)
+	jvalue Value::getJValue( bool convert ) const throw (Exception)
 	{
 		Poco::ScopedRWLock lock(rwLock, false);
 
-		if (mType != VT_JVALUE)
+		if ( !convert )
 		{
-			throw Exception(Exception::E_INVALID_PARAMETERS, "Value::getJValue(): value is not a jvalue!");
+			if (mType != VT_JVALUE)
+			{
+				throw Exception(Exception::E_INVALID_PARAMETERS, "Value::getJValue(): value is not a jvalue!");
+			}
+
+			return mValue.mJValue;
+		}
+		else
+		{
+			jvalue val;
+			switch ( mType )
+			{
+				case VT_NAMED_INSTANCE:
+					val.j = reinterpret_cast<jlong>( mValue.mNamedInstance );
+					break;
+				case VT_CONST_REF_COUNTED_OBJECT:
+					val.j = reinterpret_cast<jlong>( mValue.mConstRefCountedObj );
+					break;
+				case VT_CONST_MESSAGE:
+					val.j = reinterpret_cast<jlong>( mValue.mConstMessage );
+					break;
+				case VT_CONST_VOID_PTR:
+					val.j = reinterpret_cast<jlong>( mValue.mConstVoidPtr );
+					break;
+				case VT_VOID_PTR:
+					val.j = reinterpret_cast<jlong>( mValue.mVoidPtr );
+					break;
+				case VT_CHAR:
+					val.b = static_cast< jbyte >( mValue.mChar );
+					break;
+				case VT_UCHAR:
+					val.c = static_cast< jchar >( mValue.mUChar );
+					break;
+				case VT_SHORT:
+					val.s = static_cast< jshort >( mValue.mShort );
+					break;
+				case VT_USHORT:
+					val.i = static_cast< jint >( mValue.mUShort );
+					break;
+				case VT_INT:
+					val.i = static_cast< jint >( mValue.mInt );
+					break;
+				case VT_UINT:
+					val.j = static_cast< jlong >( mValue.mUInt );
+					break;
+				case VT_LONG:
+					val.j = static_cast< jlong >( mValue.mLong );
+					break;
+				case VT_ULONG:
+					val.j = static_cast< jlong >( mValue.mULong );
+					break;
+				case VT_FLOAT:
+					val.f = static_cast< jfloat >( mValue.mFloat );
+					break;
+				case VT_DOUBLE:
+					val.d = static_cast< jdouble >( mValue.mDouble );
+					break;
+				case VT_STRING:
+					break;
+				default:
+					val = mValue.mJValue;
+					break;
+			}
+
+			return val;
+		}
+	}
+
+	Value& Value::operator=(const Value& rhs)
+	{
+		clearValue();
+
+		Poco::ScopedRWLock lock(rwLock, true);
+
+		mType = rhs.getType();
+
+		if (mType == VT_STRING)
+		{
+			mValue.mString = new std::string(rhs.getString());
+		}
+		else
+		{
+			mValue = rhs.getValue();
 		}
 
-		return mValue.mJValue;
+		if ( (rhs.getAutoPtr() ) && ( (mType == VT_VOID_PTR ) || ( mType == VT_CONST_VOID_PTR ) || ( mType == VT_NAMED_INSTANCE ) || ( mType == VT_CONST_NAMED_INSTANCE )
+			|| ( mType == VT_CONST_MESSAGE ) || ( mType == VT_CONST_REF_COUNTED_OBJECT ) ) )
+		{
+			Poco::ScopedRWLock lock(mRWLockAutoPtr, true);
+			mAutoPtr = true;
+
+			const Poco::RefCountedObject *pRefCountedObj = NULL;
+			switch ( mType )
+			{
+				case VT_VOID_PTR:
+					pRefCountedObj = reinterpret_cast<const Poco::RefCountedObject*>(mValue.mVoidPtr);
+					break;
+				case VT_CONST_VOID_PTR:
+					pRefCountedObj = reinterpret_cast<const Poco::RefCountedObject*>(mValue.mConstVoidPtr);
+					break;
+				case VT_NAMED_INSTANCE:
+					pRefCountedObj = reinterpret_cast<const Poco::RefCountedObject*>(mValue.mNamedInstance);
+					break;
+				case VT_CONST_NAMED_INSTANCE:
+					pRefCountedObj = reinterpret_cast<const Poco::RefCountedObject*>(mValue.mConstNamedInstance);
+					break;
+				case VT_CONST_MESSAGE:
+					pRefCountedObj = reinterpret_cast<const Poco::RefCountedObject*>(mValue.mConstMessage);
+					break;
+				case VT_CONST_REF_COUNTED_OBJECT:
+					pRefCountedObj = reinterpret_cast<const Poco::RefCountedObject*>(mValue.mConstRefCountedObj);
+					break;
+			}
+
+			if ( pRefCountedObj )
+			{
+				pRefCountedObj->duplicate();
+			}
+		}
+
+
+		return *this;
 	}
 
 	std::string Value::toString() const
@@ -813,6 +1028,12 @@ namespace Myoushu
 			case VT_CONST_NAMED_INSTANCE:
 				LOG(EngineLog::LM_WARNING, "const NamedInstance * serialization not supported in Value...");
 				break;
+			case VT_CONST_MESSAGE:
+				LOG(EngineLog::LM_WARNING, "const Message * serialization not supported in Value...");
+				break;
+			case VT_CONST_REF_COUNTED_OBJECT:
+				LOG(EngineLog::LM_WARNING, "const Poco::RefCountedObject * serialization not supported in Value...");
+				break;
 			case VT_CONST_VOID_PTR:
 				LOG(EngineLog::LM_WARNING, "const void * serialization not supported in Value...");
 				break;
@@ -909,6 +1130,12 @@ namespace Myoushu
 			case VT_CONST_NAMED_INSTANCE:
 				LOG(EngineLog::LM_WARNING, "const NamedInstance * serialization not supported in Value...");
 				break;
+			case VT_CONST_MESSAGE:
+				LOG(EngineLog::LM_WARNING, "const Message * serialization not supported in Value...");
+				break;
+			case VT_CONST_REF_COUNTED_OBJECT:
+				LOG(EngineLog::LM_WARNING, "const Poco::RefCountedObject * serialization not supported in Value...");
+				break;
 			case VT_CONST_VOID_PTR:
 				LOG(EngineLog::LM_WARNING, "const void * serialization not supported in Value...");
 				break;
@@ -955,6 +1182,15 @@ namespace Myoushu
 		{
 			const Poco::RefCountedObject *pRefCountedObj = reinterpret_cast<const Poco::RefCountedObject*>(mValue.mConstNamedInstance);
 			pRefCountedObj->release();
+		}
+		else if (mType == VT_CONST_MESSAGE)
+		{
+			const Poco::RefCountedObject *pRefCountedObj = reinterpret_cast<const Poco::RefCountedObject*>(mValue.mConstMessage);
+			pRefCountedObj->release();
+		}
+		else if (mType == VT_CONST_REF_COUNTED_OBJECT)
+		{
+			mValue.mConstRefCountedObj->release();
 		}
 
 		Poco::ScopedRWLock lock(mRWLockAutoPtr, true);

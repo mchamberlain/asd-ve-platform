@@ -278,7 +278,7 @@ namespace Myoushu
 	// inlines
 	inline Ogre::Vector3 GameCharacterObject::getGlobalForwardVector()
 	{
-		return (getGlobalOrientation() * getLocalForwardVector());
+		return (getNode()->_getDerivedOrientation() * getLocalForwardVector());
 	}
 
 } // Myoushu

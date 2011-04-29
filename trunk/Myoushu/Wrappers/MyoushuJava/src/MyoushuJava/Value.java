@@ -91,8 +91,24 @@ public class Value extends RefCountedObject {
     MyoushuJNI.Value_set__SWIG_14(swigCPtr, this, SWIGTYPE_p_void.getCPtr(value));
   }
 
+  public void set(Message value, boolean autoPtr) {
+    MyoushuJNI.Value_set__SWIG_17(swigCPtr, this, Message.getCPtr(value), value, autoPtr);
+  }
+
+  public void set(Message value) {
+    MyoushuJNI.Value_set__SWIG_18(swigCPtr, this, Message.getCPtr(value), value);
+  }
+
+  public void set(RefCountedObject value, boolean autoPtr) {
+    MyoushuJNI.Value_set__SWIG_19(swigCPtr, this, RefCountedObject.getCPtr(value), value, autoPtr);
+  }
+
+  public void set(RefCountedObject value) {
+    MyoushuJNI.Value_set__SWIG_20(swigCPtr, this, RefCountedObject.getCPtr(value), value);
+  }
+
   public void set(SWIGTYPE_p_jvalue value) {
-    MyoushuJNI.Value_set__SWIG_19(swigCPtr, this, SWIGTYPE_p_jvalue.getCPtr(value));
+    MyoushuJNI.Value_set__SWIG_23(swigCPtr, this, SWIGTYPE_p_jvalue.getCPtr(value));
   }
 
   public void setChar(char value) {
@@ -163,6 +179,22 @@ public class Value extends RefCountedObject {
     MyoushuJNI.Value_setConstNamedInstancePtr__SWIG_1(swigCPtr, this, NamedInstance.getCPtr(value), value);
   }
 
+  public void setConstMessagePtr(Message value, boolean autoPtr) {
+    MyoushuJNI.Value_setConstMessagePtr__SWIG_0(swigCPtr, this, Message.getCPtr(value), value, autoPtr);
+  }
+
+  public void setConstMessagePtr(Message value) {
+    MyoushuJNI.Value_setConstMessagePtr__SWIG_1(swigCPtr, this, Message.getCPtr(value), value);
+  }
+
+  public void setConstRefCountedObjectPtr(RefCountedObject value, boolean autoPtr) {
+    MyoushuJNI.Value_setConstRefCountedObjectPtr__SWIG_0(swigCPtr, this, RefCountedObject.getCPtr(value), value, autoPtr);
+  }
+
+  public void setConstRefCountedObjectPtr(RefCountedObject value) {
+    MyoushuJNI.Value_setConstRefCountedObjectPtr__SWIG_1(swigCPtr, this, RefCountedObject.getCPtr(value), value);
+  }
+
   public void setConstVoidPtr(SWIGTYPE_p_void value, boolean autoPtr) {
     MyoushuJNI.Value_setConstVoidPtr__SWIG_0(swigCPtr, this, SWIGTYPE_p_void.getCPtr(value), autoPtr);
   }
@@ -227,8 +259,16 @@ public class Value extends RefCountedObject {
     return MyoushuJNI.Value_get__SWIG_12(swigCPtr, this, SWIGTYPE_p_void.getCPtr(value));
   }
 
+  public boolean get(Message value) {
+    return MyoushuJNI.Value_get__SWIG_15(swigCPtr, this, Message.getCPtr(value), value);
+  }
+
+  public boolean get(RefCountedObject value) {
+    return MyoushuJNI.Value_get__SWIG_16(swigCPtr, this, RefCountedObject.getCPtr(value), value);
+  }
+
   public boolean get(SWIGTYPE_p_jvalue value) {
-    return MyoushuJNI.Value_get__SWIG_15(swigCPtr, this, SWIGTYPE_p_jvalue.getCPtr(value));
+    return MyoushuJNI.Value_get__SWIG_17(swigCPtr, this, SWIGTYPE_p_jvalue.getCPtr(value));
   }
 
   public char getChar() {
@@ -295,8 +335,22 @@ public class Value extends RefCountedObject {
     return (cPtr == 0) ? null : new SWIGTYPE_p_void(cPtr, false);
   }
 
+  public Message getConstMessage() {
+    long cPtr = MyoushuJNI.Value_getConstMessage(swigCPtr, this);
+    return (cPtr == 0) ? null : new Message(cPtr, false);
+  }
+
+  public RefCountedObject getConstRefCountedObject() {
+    long cPtr = MyoushuJNI.Value_getConstRefCountedObject(swigCPtr, this);
+    return (cPtr == 0) ? null : new RefCountedObject(cPtr, false);
+  }
+
+  public SWIGTYPE_p_jvalue getJValue(boolean convert) {
+    return new SWIGTYPE_p_jvalue(MyoushuJNI.Value_getJValue__SWIG_0(swigCPtr, this, convert), true);
+  }
+
   public SWIGTYPE_p_jvalue getJValue() {
-    return new SWIGTYPE_p_jvalue(MyoushuJNI.Value_getJValue(swigCPtr, this), true);
+    return new SWIGTYPE_p_jvalue(MyoushuJNI.Value_getJValue__SWIG_1(swigCPtr, this), true);
   }
 
   public Value.ValueType getType() {
@@ -342,6 +396,8 @@ public class Value extends RefCountedObject {
     VT_NAMED_INSTANCE,
     VT_VOID_PTR,
     VT_CONST_NAMED_INSTANCE,
+    VT_CONST_REF_COUNTED_OBJECT,
+    VT_CONST_MESSAGE,
     VT_CONST_VOID_PTR,
     VT_JVALUE,
     VT_UNKNOWN;

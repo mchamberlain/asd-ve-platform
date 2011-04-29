@@ -36,7 +36,16 @@ public class TriangleMesh extends Shape {
   }
 
   public TriangleMesh(TriangleMeshShape arg0, NxOgre_Actor arg1, SWIGTYPE_p_NxArrayT_NxShapeDesc_p_t arg2) {
-    this(MyoushuJNI.new_TriangleMesh(TriangleMeshShape.getCPtr(arg0), arg0, NxOgre_Actor.getCPtr(arg1), arg1, SWIGTYPE_p_NxArrayT_NxShapeDesc_p_t.getCPtr(arg2)), true);
+    this(MyoushuJNI.new_TriangleMesh__SWIG_0(TriangleMeshShape.getCPtr(arg0), arg0, NxOgre_Actor.getCPtr(arg1), arg1, SWIGTYPE_p_NxArrayT_NxShapeDesc_p_t.getCPtr(arg2)), true);
+  }
+
+  public TriangleMesh(TriangleMeshShape arg0, NxOgre_Actor arg1) {
+    this(MyoushuJNI.new_TriangleMesh__SWIG_1(TriangleMeshShape.getCPtr(arg0), arg0, NxOgre_Actor.getCPtr(arg1), arg1), true);
+  }
+
+  public SWIGTYPE_p_NxShape getNxShape() {
+    long cPtr = MyoushuJNI.TriangleMesh_getNxShape(swigCPtr, this);
+    return (cPtr == 0) ? null : new SWIGTYPE_p_NxShape(cPtr, false);
   }
 
 }

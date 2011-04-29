@@ -154,8 +154,22 @@ public class AutoPtr_Value {
     return (cPtr == 0) ? null : new SWIGTYPE_p_void(cPtr, false);
   }
 
+  public Message getConstMessage() {
+    long cPtr = MyoushuJNI.AutoPtr_Value_getConstMessage(swigCPtr, this);
+    return (cPtr == 0) ? null : new Message(cPtr, false);
+  }
+
+  public RefCountedObject getConstRefCountedObject() {
+    long cPtr = MyoushuJNI.AutoPtr_Value_getConstRefCountedObject(swigCPtr, this);
+    return (cPtr == 0) ? null : new RefCountedObject(cPtr, false);
+  }
+
+  public SWIGTYPE_p_jvalue getJValue(boolean convert) {
+    return new SWIGTYPE_p_jvalue(MyoushuJNI.AutoPtr_Value_getJValue__SWIG_0(swigCPtr, this, convert), true);
+  }
+
   public SWIGTYPE_p_jvalue getJValue() {
-    return new SWIGTYPE_p_jvalue(MyoushuJNI.AutoPtr_Value_getJValue(swigCPtr, this), true);
+    return new SWIGTYPE_p_jvalue(MyoushuJNI.AutoPtr_Value_getJValue__SWIG_1(swigCPtr, this), true);
   }
 
   public Value.ValueType getType() {

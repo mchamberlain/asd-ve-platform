@@ -89,12 +89,12 @@ public class Scene extends NamedObject_Scene {
     return (cPtr == 0) ? null : new SWIGTYPE_p_Ogre__SceneManager(cPtr, false);
   }
 
-  public SWIGTYPE_p_std__listT_Myoushu__GameObject_p_t getGameObjectsFromRaycast(Vector3 position, Vector3 direction, float range, SWIGTYPE_p_NxOgre__RayCaster__ActorFilter filter) {
-    return new SWIGTYPE_p_std__listT_Myoushu__GameObject_p_t(MyoushuJNI.Scene_getGameObjectsFromRaycast__SWIG_0(swigCPtr, this, Vector3.getCPtr(position), position, Vector3.getCPtr(direction), direction, range, SWIGTYPE_p_NxOgre__RayCaster__ActorFilter.getCPtr(filter)), true);
+  public ListGameObject getGameObjectsFromRaycast(Vector3 position, Vector3 direction, float range, SWIGTYPE_p_NxOgre__RayCaster__ActorFilter filter) {
+    return new ListGameObject(MyoushuJNI.Scene_getGameObjectsFromRaycast__SWIG_0(swigCPtr, this, Vector3.getCPtr(position), position, Vector3.getCPtr(direction), direction, range, SWIGTYPE_p_NxOgre__RayCaster__ActorFilter.getCPtr(filter)), true);
   }
 
-  public SWIGTYPE_p_std__listT_Myoushu__GameObject_p_t getGameObjectsFromRaycast(Vector3 position, Vector3 direction, float range) {
-    return new SWIGTYPE_p_std__listT_Myoushu__GameObject_p_t(MyoushuJNI.Scene_getGameObjectsFromRaycast__SWIG_1(swigCPtr, this, Vector3.getCPtr(position), position, Vector3.getCPtr(direction), direction, range), true);
+  public ListGameObject getGameObjectsFromRaycast(Vector3 position, Vector3 direction, float range) {
+    return new ListGameObject(MyoushuJNI.Scene_getGameObjectsFromRaycast__SWIG_1(swigCPtr, this, Vector3.getCPtr(position), position, Vector3.getCPtr(direction), direction, range), true);
   }
 
   public GameObject getClosestGameObjectFromRaycast(Vector3 position, Vector3 direction, float range, SWIGTYPE_p_NxOgre__RayCaster__ActorFilter filter) {
@@ -105,6 +105,10 @@ public class Scene extends NamedObject_Scene {
   public GameObject getClosestGameObjectFromRaycast(Vector3 position, Vector3 direction, float range) {
     long cPtr = MyoushuJNI.Scene_getClosestGameObjectFromRaycast__SWIG_1(swigCPtr, this, Vector3.getCPtr(position), position, Vector3.getCPtr(direction), direction, range);
     return (cPtr == 0) ? null : new GameObject(cPtr, false);
+  }
+
+  public void getGameObjectsInCameraView(Camera camera, ListGameObject gameObjectList) {
+    MyoushuJNI.Scene_getGameObjectsInCameraView(swigCPtr, this, Camera.getCPtr(camera), camera, ListGameObject.getCPtr(gameObjectList), gameObjectList);
   }
 
   public String getTypeName() {

@@ -68,11 +68,13 @@ namespace Myoushu
 			 * such as collisionCubeScale{X,Y,Z}, collisionSphereRadius etc.
 			 * @param collisionShapeProperty The value of the "collisionShape" key in the key-value map.
 			 * @param keyValProps The key-value properties of the object to create a collision shape for.
+			 * @param pSceneNode Pointer to the Ogre::SceneNode that will contain the entity with this collisionshape.
+			 * @param pEntity The entity for which the collision shape is being created.
 			 * @param boundingBoxSize The size of the bouding box of the entity.
 			 * @param shapeParams An NxOgre::ShapeParams instance for any extra parameters that should be applied
 			 *					  to the shape when it is created.
 			 */
-			NxOgre::ShapeBlueprint* createCollisionShape(const KeyValueProperties* pKeyValProps, const Ogre::Vector3& boundingBoxSize, const NxOgre::ShapeParams& shapeParams = NxOgre::ShapeParams());
+			NxOgre::ShapeBlueprint* createCollisionShape(const KeyValueProperties* pKeyValProps, const Ogre::SceneNode* pSceneNode, const Ogre::Entity *pEntity, const Ogre::Vector3& boundingBoxSize, const NxOgre::ShapeParams& shapeParams = NxOgre::ShapeParams());
 	};
 } // namespace Myoushu
 

@@ -185,6 +185,9 @@ namespace Myoushu
 			/** List of Tasks to execute. */
 			std::list<Poco::AutoPtr<Task> > executeTaskList;
 
+			/** Kills all running tasks. Called when the kernel stops executing. */
+			void killAllTasks();
+
 	};
 } // Myoushu
 

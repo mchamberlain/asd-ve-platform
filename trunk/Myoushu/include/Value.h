@@ -39,6 +39,7 @@ along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 #include "Platform.h"
 #include "NamedInstance.h"
 #include "Serializable.h"
+#include "Message.h"
 
 namespace Myoushu
 {
@@ -79,6 +80,8 @@ namespace Myoushu
 				VT_VOID_PTR,
 				/** const Instance of NamedInstance */
 				VT_CONST_NAMED_INSTANCE,
+				VT_CONST_REF_COUNTED_OBJECT,
+				VT_CONST_MESSAGE,
 				/** const void pointer type */
 				VT_CONST_VOID_PTR,
 				/** JNI jvalue type. */
@@ -104,6 +107,8 @@ namespace Myoushu
 				NamedInstance *mNamedInstance;
 				void *mVoidPtr;
 				const NamedInstance *mConstNamedInstance;
+				const Message *mConstMessage;
+				const Poco::RefCountedObject *mConstRefCountedObj;
 				const void *mConstVoidPtr;
 				jvalue mJValue;
 			};
@@ -214,6 +219,24 @@ namespace Myoushu
 			void set(const NamedInstance *value, bool autoPtr = false);
 
 			/**
+			 * Stores a NamedInstance instance pointer in this type. 
+			 * @param value The NamedInstance instance pointer to store in this instance.
+			 * @param autoPtr If true it indicates that value is an instance of Poco::RefCountedObject and is held in a Poco::AutoPtr.
+			 *				  This means that duplicate() and release() shall be called as appropriate to increase and decrease the reference count.
+			 *				  Defaults to false.
+			 */
+			void set(const Message *value, bool autoPtr = false);
+
+			/**
+			 * Stores a NamedInstance instance pointer in this type. 
+			 * @param value The NamedInstance instance pointer to store in this instance.
+			 * @param autoPtr If true it indicates that value is an instance of Poco::RefCountedObject and is held in a Poco::AutoPtr.
+			 *				  This means that duplicate() and release() shall be called as appropriate to increase and decrease the reference count.
+			 *				  Defaults to false.
+			 */
+			void set(const Poco::RefCountedObject *value, bool autoPtr = false);
+
+			/**
 			 * Stores a void pointer in this type. 
 			 * @param value The void pointer to store in this instance.
 			 * @param autoPtr If true it indicates that value is an instance of Poco::RefCountedObject and is held in a Poco::AutoPtr.
@@ -322,6 +345,24 @@ namespace Myoushu
 			void setConstNamedInstancePtr(const NamedInstance *value, bool autoPtr = false);
 
 			/**
+			 * Stores a NamedInstance instance pointer in this type. 
+			 * @param value The NamedInstance instance pointer to store in this instance.
+			 * @param autoPtr If true it indicates that value is an instance of Poco::RefCountedObject and is held in a Poco::AutoPtr.
+			 *				  This means that duplicate() and release() shall be called as appropriate to increase and decrease the reference count.
+			 *				  Defaults to false.
+			 */
+			void setConstMessagePtr(const Message *value, bool autoPtr = false);
+
+			/**
+			 * Stores a NamedInstance instance pointer in this type. 
+			 * @param value The NamedInstance instance pointer to store in this instance.
+			 * @param autoPtr If true it indicates that value is an instance of Poco::RefCountedObject and is held in a Poco::AutoPtr.
+			 *				  This means that duplicate() and release() shall be called as appropriate to increase and decrease the reference count.
+			 *				  Defaults to false.
+			 */
+			void setConstRefCountedObjectPtr(const Poco::RefCountedObject *value, bool autoPtr = false);
+
+			/**
 			 * Stores a void pointer in this type. 
 			 * @param value The void pointer to store in this instance.
 			 * @param autoPtr If true it indicates that value is an instance of Poco::RefCountedObject and is held in a Poco::AutoPtr.
@@ -427,6 +468,18 @@ namespace Myoushu
 			bool get(const void* &value) const;
 
 			/**
+			 * Gets a void pointer from this value stored in this instance. 
+			 * @param value The void pointer to store in this instance.
+			 */
+			bool get(const Message* &value) const;
+
+			/**
+			 * Gets a void pointer from this value stored in this instance. 
+			 * @param value The void pointer to store in this instance.
+			 */
+			bool get(const Poco::RefCountedObject* &value) const;
+
+			/**
 			 * Gets a jvalue from this value stored in this instance. 
 			 * @param value The jreference to use to store that value from this instance in.
 			 */
@@ -523,10 +576,24 @@ namespace Myoushu
 			const void* getConstVoidPtr() const throw (Exception);
 
 			/**
+			 * Gets a void pointer from this value stored in this instance. 
+			 * @throws Exception::E_INVALID_PARAMETERS if the value wrapped in this instance is not void*.
+			 */
+			const Message* getConstMessage() const throw (Exception);
+
+			/**
+			 * Gets a void pointer from this value stored in this instance. 
+			 * @throws Exception::E_INVALID_PARAMETERS if the value wrapped in this instance is not void*.
+			 */
+			const Poco::RefCountedObject* getConstRefCountedObject() const throw (Exception);
+
+			/**
 			 * Gets a jvalue from this value stored in this instance. 
+			 * @param convert If true the function attempts to convert a non-jvalue stored in this Value
+			 *				  instance into the correct type for the jvalue.
 			 * @throws Exception::E_INVALID_PARAMETERS if the value wrapped in this instance is not jvalue.
 			 */
-			jvalue getJValue() const throw (Exception);
+			jvalue getJValue( bool convert = false ) const throw (Exception);
 
 			/** Gets the type stored in this Value instance. */
 			ValueType getType() const;
@@ -668,6 +735,16 @@ namespace Myoushu
 		set(value, autoPtr);
 	}
 
+	inline void Value::setConstMessagePtr(const Message *value, bool autoPtr)
+	{
+		set(value, autoPtr);
+	}
+
+	inline void Value::setConstRefCountedObjectPtr(const Poco::RefCountedObject *value, bool autoPtr)
+	{
+		set(value, autoPtr);
+	}
+	
 	inline void Value::setConstVoidPtr(const void *value, bool autoPtr)
 	{
 		set(value, autoPtr);
@@ -696,24 +773,6 @@ namespace Myoushu
 	{
 		Poco::ScopedRWLock(mRWLockAutoPtr, false);
 		return mAutoPtr;
-	}
-
-	inline Value& Value::operator=(const Value& rhs)
-	{
-		Poco::ScopedRWLock lock(rwLock, true);
-
-		mType = rhs.getType();
-
-		if (mType == VT_STRING)
-		{
-			mValue.mString = new std::string(rhs.getString());
-		}
-		else
-		{
-			mValue = rhs.getValue();
-		}
-
-		return *this;
 	}
 
 } // namespace Myoushu

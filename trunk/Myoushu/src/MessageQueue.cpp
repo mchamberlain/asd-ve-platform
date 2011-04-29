@@ -36,6 +36,7 @@ along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 #include "MessageQueue.h"
 #include "Message.h"
 #include "Exception.h"
+#include "EngineLog.h"
 
 namespace Myoushu
 {

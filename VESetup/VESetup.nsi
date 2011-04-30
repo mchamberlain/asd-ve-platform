@@ -62,7 +62,7 @@ ShowUninstDetails show
 Section "Microsoft Visual C++ 2005 SP1 Redist" SEC0000
     SetOutPath $INSTDIR\redist
     SetOverwrite on
-    File C:\Users\TheFreeman\Downloads\vcredist_x86_2005_sp1.exe
+    File ..\redist\vcredist_x86_2005_sp1.exe
     ExecWait '"$INSTDIR\redist\vcredist_x86_2005_sp1.exe" /Q'
     WriteRegStr HKLM "${REGKEY}\Components" "Microsoft Visual C++ 2005 SP1 Redist" 1
 SectionEnd
@@ -70,25 +70,23 @@ SectionEnd
 Section "Microsoft Visual C++ 2008 SP1 Redist" SEC0001
     SetOutPath $INSTDIR\redist
     SetOverwrite on
-    File C:\Users\TheFreeman\Downloads\vcredist_x86_2008_sp1.exe
+    File ..\redist\vcredist_x86_2008_sp1.exe
     ExecWait '"$INSTDIR\redist\vcredist_x86_2008_sp1.exe" /Q'
     WriteRegStr HKLM "${REGKEY}\Components" "Microsoft Visual C++ 2008 SP1 Redist" 1
 SectionEnd
 
-Section DirectX SEC0002
+Section "Microsoft Visual C++ 2008 SP1 Redist" SEC0008
     SetOutPath $INSTDIR\redist
     SetOverwrite on
-    File C:\Users\TheFreeman\Downloads\directx_aug2008_redist.exe
-    ExecWait '"$INSTDIR\redist\directx_aug2008_redist.exe" /Q /T:"$INSTDIR\redist\DirectX"'
-    ExecWait "$INSTDIR\redist\DirectX\dxsetup.exe"
-    RmDir /r $INSTDIR\redist\DirectX
-    WriteRegStr HKLM "${REGKEY}\Components" DirectX 1
+    File ..\redist\vcredist_x86_2010_sp1.exe
+    ExecWait '"$INSTDIR\redist\vcredist_x86_2010_sp1.exe" /Q'
+    WriteRegStr HKLM "${REGKEY}\Components" "Microsoft Visual C++ 2010 SP1 Redist" 1
 SectionEnd
 
 Section "Nvidia PhysX System Software" SEC0003
     SetOutPath $INSTDIR\redist
     SetOverwrite on
-    File C:\Users\TheFreeman\Downloads\PhysX_8.04.25_SystemSoftware.exe
+    File ..\redist\PhysX_8.04.25_SystemSoftware.exe
     ExecWait '"$INSTDIR\redist\PhysX_8.04.25_SystemSoftware.exe" /passive'
     WriteRegStr HKLM "${REGKEY}\Components" "Nvidia PhysX System Software" 1
 SectionEnd
@@ -96,7 +94,7 @@ SectionEnd
 Section "OpenAL Redistributable" SEC0004
     SetOutPath $INSTDIR\redist
     SetOverwrite on
-    File C:\Users\TheFreeman\Downloads\oalinst.exe
+    File ..\redist\oalinst.exe
     ExecWait '"$INSTDIR\redist\oalinst.exe"'
     WriteRegStr HKLM "${REGKEY}\Components" "OpenAL Redistributable" 1
 SectionEnd
@@ -117,21 +115,22 @@ Section "API Documentation" SEC0005
 SectionEnd
 
 Section -Main SEC0006
-    SetOutPath $INSTDIR\redist
-    File ..\..\UpdatePath\Release\UpdatePath.exe
     SetOutPath $INSTDIR
     SetOverwrite on
     File /r ..\temp\VE\*
-    SetOutPath $INSTDIR\bin\windows
-    File "C:\Program Files\NVIDIA Corporation\Cg\bin\cg.dll"
-    File "C:\Program Files\NVIDIA Corporation\Cg\bin\cgD3D8.dll"
-    File "C:\Program Files\NVIDIA Corporation\Cg\bin\cgD3D9.dll"
-    File "C:\Program Files\NVIDIA Corporation\Cg\bin\cgD3D10.dll"
-    File "C:\Program Files\NVIDIA Corporation\Cg\bin\cgGL.dll"
-    File C:\Windows\System32\OpenAL32.dll
     #!insertmacro CREATE_SMGROUP_SHORTCUT SampleLua $INSTDIR\Samples\Myoushu\SampleLua\bin\windows\SampleLua.exe $INSTDIR\Samples\Myoushu\SampleLua\bin\windows
     ExecWait '"$INSTDIR\redist\UpdatePath.exe" /A "$INSTDIR\bin\windows"' 
     WriteRegStr HKLM "${REGKEY}\Components" Main 1
+SectionEnd
+
+Section DirectX SEC0002
+    SetOutPath $INSTDIR\redist
+    SetOverwrite on
+    File ..\redist\directx_Jun2010_redist.exe
+    ExecWait '"$INSTDIR\redist\directx_Jun2010_redist.exe" /Q /T:"$INSTDIR\redist\DirectX"'
+    ExecWait "$INSTDIR\redist\DirectX\DXSETUP.exe"
+    RmDir /r $INSTDIR\redist\DirectX
+    WriteRegStr HKLM "${REGKEY}\Components" DirectX 1
 SectionEnd
 
 Section -post SEC0007
@@ -173,14 +172,6 @@ done${UNSECTION_ID}:
 
 Section /o -un.Main UNSEC0006
     #!insertmacro DELETE_SMGROUP_SHORTCUT SampleLua
-    Delete /REBOOTOK $INSTDIR\bin\windows\OpenAL32.dll
-    Delete /REBOOTOK $INSTDIR\bin\windows\cgGL.dll
-    Delete /REBOOTOK $INSTDIR\bin\windows\cgD3D10.dll
-    Delete /REBOOTOK $INSTDIR\bin\windows\cgD3D9.dll
-    Delete /REBOOTOK $INSTDIR\bin\windows\cgD3D8.dll
-    Delete /REBOOTOK $INSTDIR\bin\windows\cg.dll
-    ExecWait '"$INSTDIR\redist\UpdatePath.exe" /R "$INSTDIR\bin\windows"' 
-    Delete /REBOOTOK $INSTDIR\redist\UpdatePath.exe
     RmDir /r /REBOOTOK $INSTDIR
     DeleteRegValue HKLM "${REGKEY}\Components" Main
 SectionEnd
@@ -202,8 +193,13 @@ Section /o "-un.Nvidia PhysX System Software" UNSEC0003
 SectionEnd
 
 Section /o -un.DirectX UNSEC0002
-    Delete /REBOOTOK $INSTDIR\redist\directx_aug2008_redist.exe
+    Delete /REBOOTOK $INSTDIR\redist\directx_Jun2010_redist.exe
     DeleteRegValue HKLM "${REGKEY}\Components" DirectX
+SectionEnd
+
+Section /o "-un.Microsoft Visual C++ 2008 SP1 Redist" UNSEC0008
+    Delete /REBOOTOK $INSTDIR\redist\vcredist_x86_2010_sp1.exe
+    DeleteRegValue HKLM "${REGKEY}\Components" "Microsoft Visual C++ 2010 SP1 Redist"
 SectionEnd
 
 Section /o "-un.Microsoft Visual C++ 2008 SP1 Redist" UNSEC0001
@@ -262,6 +258,7 @@ Function un.onInit
     !insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuGroup
     !insertmacro SELECT_UNSECTION "Microsoft Visual C++ 2005 SP1 Redist" ${UNSEC0000}
     !insertmacro SELECT_UNSECTION "Microsoft Visual C++ 2008 SP1 Redist" ${UNSEC0001}
+    !insertmacro SELECT_UNSECTION "Microsoft Visual C++ 2010 SP1 Redist" ${UNSEC0008}
     !insertmacro SELECT_UNSECTION DirectX ${UNSEC0002}
     !insertmacro SELECT_UNSECTION "Nvidia PhysX System Software" ${UNSEC0003}
     !insertmacro SELECT_UNSECTION "OpenAL Redistributable" ${UNSEC0004}
@@ -284,7 +281,8 @@ FunctionEnd
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
 !insertmacro MUI_DESCRIPTION_TEXT ${SEC0000} "The Microsoft Visual C++ 2005 SP1 redistributable install the standard C++ libraries required by the VE."
 !insertmacro MUI_DESCRIPTION_TEXT ${SEC0001} "The Microsoft Visual C++ 2008 SP1 redistributable package installs the standard C++ libraries used by the VE. It is required for the VE to function."
-!insertmacro MUI_DESCRIPTION_TEXT ${SEC0002} "Install DirectX August 2008. This is required for graphics rendering and input under Windows."
+!insertmacro MUI_DESCRIPTION_TEXT ${SEC0008} "The Microsoft Visual C++ 2010 SP1 redistributable package installs the standard C++ libraries used by the VE. It is required for the VE to function."
+!insertmacro MUI_DESCRIPTION_TEXT ${SEC0002} "Install DirectX June 2010. This is required for graphics rendering and input under Windows."
 !insertmacro MUI_DESCRIPTION_TEXT ${SEC0003} "Nvidia PhysX is a physics engine. It is required for the VE to function."
 !insertmacro MUI_DESCRIPTION_TEXT ${SEC0004} "The OpenAL audio library redistributable package."
 !insertmacro MUI_DESCRIPTION_TEXT ${SEC0005} "The API Documentation for developers aiming to use the engine as a library."

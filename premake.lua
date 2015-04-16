@@ -22,8 +22,8 @@ if (windows) then
 elseif (linux) then
 	CGDIR = "/usr"
 	OPENALPATH = "/usr/include/OpenAL"
-	JAVAHOME = "$JAVA_HOME"
-	PHYSXPATH = "/usr/include/PhysX/v2.8.1"
+	JAVAHOME = "$(JAVA_HOME)"
+	PHYSXPATH = "/usr/include/PhysX/v2.7.3"
 end
 
 -- Inserts the include paths of all Myoushu dependencies, including the Myoushu include paths
@@ -87,8 +87,28 @@ function insertMyoushuDependantIncludes(rootDir, thirdPartyDir, includesList)
 end
 
 -- Inserts all libs needed to compile an app against Myoushu
-function insertMyoushuDependantLibs(libsList)
+function insertMyoushuDependantLibs(libsList, libPathsList, rootDir)
+	table.insert(libPathsList, {
+		rootDir .. BINDIR .. PLATFORMDIR,
+		rootDir .. LIBDIR .. PLATFORMDIR
+	})
+	if (windows) then
+		PhysXPath = "$(PHYSX_DIR)"
+		table.insert(libPathsList, {
+			PhysXPath .. "/SDKs/lib/win32",
+			PhysXPath .. "/Bin/win32"
+		})
+	elseif (linux) then
+		table.insert(libPathsList, {"/usr/lib/PhysX/v2.7.3"})
+		table.insert(libsList, {
+			"dl",
+			"pthread"
+		})
+	end
 	table.insert(libsList, {
+		"PhysXLoader",
+		"NxCooking",
+		"NxCharacter",
 		"ois",
 		"addons",
 		"DevIL",
@@ -116,9 +136,9 @@ end
 -- Inserts all defines needed to compile an app against Myoushu
 function insertMyoushuDependantDefines(definesList)
 	if (windows) then
-		table.insert(definesList, {"WIN32", "LUA_BUILD_AS_DLL", "POCO_NO_AUTOMATIC_LIBS", "OIS_DYNAMIC_LIB", "BOOST_THREAD_USE_DLL", "BOOST_THREAD_NO_LIB"})
+		table.insert(definesList, {"WIN32", "_ALLOW_KEYWORD_MACROS", "LUA_BUILD_AS_DLL", "POCO_NO_AUTOMATIC_LIBS", "OIS_DYNAMIC_LIB", "BOOST_THREAD_USE_DLL", "BOOST_THREAD_NO_LIB"})
 	elseif (linux) then
-		table.insert(definesList, {"LINUX", "NX_LINUX", "NXOGRE_LINUX", "BOOST_THREAD_NO_LIB"})
+		table.insert(definesList, {"LINUX", "NXOGRE_LINUX", "NX_LINUX", "NX32", "NX_DISABLE_FLUIDS", "BOOST_THREAD_NO_LIB"})
 	end
 end
 
@@ -126,7 +146,6 @@ project.name = "astt_all"
 project.bindir = BINDIR .. PLATFORMDIR
 project.libdir = LIBDIR .. PLATFORMDIR
 project.objdir = OBJDIR
-
 --SQLite (3rd party)
 dopackage("3rdparty/sqlite/sqlite.lua")
 -- Boost threads (3rd party)
@@ -237,7 +256,7 @@ dopackage("Myoushu/Wrappers/MyoushuJava/MyoushuJava.lua")
 
 --MyGUI Layouteditor(3rd party)
 dopackage("3rdparty/MyGUI_2.0.1_source/mygui_layouteditor.lua")
---tolua binary	
+--tolua binary
 --dopackage("3rdparty/tolua++-1.0.92/toluabin.lua")
 --OgreXMLConverter
 dopackage("3rdparty/ogrexmlconverter/ogrexmlconverter.lua")
@@ -279,4 +298,5 @@ insertMyoushuDependantIncludes(rootDir, thirdPartyDir, asttBin.includepaths)
 asttBin.files = { matchfiles("Wrappers/ASTTLua/*.h"), matchfiles("Wrappers/ASTTLua/*.cpp"), matchfiles("include/*.h"), matchfiles("src/*.cpp") }
 asttBin.excludes = { "src/winmain.cpp" }
 asttBin.links = { }
-insertMyoushuDependantLibs(asttBin.links)
+asttBin.libpaths = { }
+insertMyoushuDependantLibs(asttBin.links, asttBin.libpaths, rootDir)

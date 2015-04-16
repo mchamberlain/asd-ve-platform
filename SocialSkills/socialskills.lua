@@ -28,4 +28,5 @@ insertMyoushuDependantIncludes(rootDir, thirdPartyDir, package.includepaths)
 package.files = { matchfiles("include/*.h"), matchfiles("src/*.cpp") }
 package.excludes = { "src/winmain.cpp" }
 package.links = { "astt" }
-insertMyoushuDependantLibs(package.links)
+package.libpaths = {}
+insertMyoushuDependantLibs(package.links, package.libpaths, rootDir)

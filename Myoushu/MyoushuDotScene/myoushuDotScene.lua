@@ -39,4 +39,5 @@ package.config["Debug"].defines = {
 }
 
 package.links = { "ogreHDRCompositor", "ogredotscene" }
-insertMyoushuDependantLibs(package.links)
+package.libpaths = {}
+insertMyoushuDependantLibs(package.links, package.libpaths, rootDir)

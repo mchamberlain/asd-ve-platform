@@ -29,4 +29,5 @@ insertMyoushuDependantIncludes(rootDir, thirdPartyDir, package.includepaths)
 
 package.files = { matchfiles("*.h"), matchfiles("*.cpp") }
 package.links = { }
-insertMyoushuDependantLibs(package.links)
+package.libpaths = {}
+insertMyoushuDependantLibs(package.links, package.libpaths, rootDir)

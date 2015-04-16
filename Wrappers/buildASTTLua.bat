@@ -1,0 +1,1 @@
+swig -lua -c++ -v -I..\include -outdir ASTTLua -o ASTTLua\ASTTLua.cpp astt.i

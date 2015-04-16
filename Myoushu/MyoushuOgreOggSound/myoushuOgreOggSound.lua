@@ -39,4 +39,5 @@ package.config["Debug"].defines = {
 }
 
 package.links = { "myoushu", "ogremain", "ogreoggsound" }
-insertMyoushuDependantLibs(package.links)
+package.libpaths = {}
+insertMyoushuDependantLibs(package.links, package.libpaths, rootDir)

@@ -65,11 +65,6 @@ public class SampleCubesGameTask extends CallbackTask
 		Light light;
 
             JavaFunctorFactory functorFactory = JavaFunctorFactory.getSingletonPtr();
-            JavaFunctor f = functorFactory.make( "GUIMessageFunctor2" );
-            f.setNumParams(1);
-            f.setMethod(this, "receiveGUIMessage", "(J)V");
-
-            msgId = Singleton_NotificationManager.getSingleton().addObserverFunctorGUIMessage( f );
 
 		InputDevice kbInputDevice = InputDeviceFactory.getSingleton().getInputDevice("keyboard0").get();
 		InputDevice msInputDevice = InputDeviceFactory.getSingleton().getInputDevice("mouse0").get();
@@ -92,27 +87,27 @@ public class SampleCubesGameTask extends CallbackTask
 
 		// Register the function callback for the createCube action
 		//inputActionManager.addInputActionCallback("createCube", this, &createCube);
-		JavaFunctor functor = functorFactory.make("Functor");
+		JavaFunctor functor = functorFactory.make("Functor1");
         functor.setNumParams(1);
 		functor.setMethod(this, "createCube", "(J)V");
 		inputActionManager.addInputActionCallback("createCube", functor);
 		// Register the function callback for the createCubePillar action
-		functor = functorFactory.make("Functor");
+		functor = functorFactory.make("Functor2");
         functor.setNumParams(1);
 		functor.setMethod(this, "createCubePillar", "(J)V");
 		inputActionManager.addInputActionCallback("createCubePillar", functor);
 		// Register the function callback for the createCubePyramid action
-		functor = functorFactory.make("Functor");
+		functor = functorFactory.make("Functor3");
         functor.setNumParams(1);
 		functor.setMethod(this, "createCubePyramid", "(J)V");
 		inputActionManager.addInputActionCallback("createCubePyramid", functor);
 		// Register the function callback for the toggleShadows action
-		functor = functorFactory.make("Functor");
+		functor = functorFactory.make("Functor4");
         functor.setNumParams(1);
 		functor.setMethod(this, "toggleShadows", "(J)V");
 		inputActionManager.addInputActionCallback("toggleShadows", functor);
 		// Register the function callback for the transformCamera action
-		functor = functorFactory.make("Functor");
+		functor = functorFactory.make("Functor5");
         functor.setNumParams(1);
 		functor.setMethod(this, "transformCamera", "(J)V");
 		inputActionManager.addInputActionCallback("transformCamera", functor);
@@ -156,9 +151,6 @@ public class SampleCubesGameTask extends CallbackTask
 
        public void killCallback()
        {
-            Singleton_NotificationManager.getSingleton().removeObserverFunctorGUIMessage(msgId);
-            Singleton_NotificationManager.getSingleton().removeObserverObject(msgId);
-            Singleton_NotificationManager.getSingleton().removeQueue(msgId);
        }
 
        public void suspendCallback()
@@ -169,24 +161,6 @@ public class SampleCubesGameTask extends CallbackTask
        public void executeCallback( long timeDelta )
        {
             Singleton_NotificationManager.getSingleton().dispatchQueuedNotifications(msgId);
-
-            ObjectPool_GUIMessage guiMsgPool = Myoushu.getObjectPoolGUIMessage();
-            if ( guiMsgPool != null )
-            {
-                GUIMessage msg = guiMsgPool.get();
-                if ( msg != null )
-                {
-                    msg.setMessageType(GUIMessage.GUIMessageType.GM_UNKNOWN);
-                    msg.setMessage( "SampleCubesGameTask.java" );
-                    Singleton_NotificationManager.getSingleton().queueNotification( msg );
-                }
-           }
-       }
-
-       public void receiveGUIMessage( long msgPtr )
-       {
-            GUIMessage msg = Utility.castMessageToGUIMessage( new Message( msgPtr, false ) );
-            System.out.println( msg.getMessage() );
        }
 
 	public void toggleShadows(long messagePtr)
@@ -306,6 +280,7 @@ public class SampleCubesGameTask extends CallbackTask
                 v.set( 10.0f );
                 p.insert( "test", v);
                 Value v2 = p.get( "test" );
+
                 System.out.println( "From properties, value test: " + v2.getFloat() );
 
                 System.out.println( scene.getActor( body.getName() ) );

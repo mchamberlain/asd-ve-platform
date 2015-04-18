@@ -74,3 +74,6 @@ To build the project:
   7. build the entire solution
 
 Binaries will be in the bin/windows directory of the source tree. For each of the samples you'll have to copy the base engine binaries (bin/windows in the root of the source tree) to the bin/windows directory of the sample.
+
+## License
+This project is released under a modified version of the LGPL version 3 (non-commercial use only). Please see the [LICENSE](LICENSE) file for more details.

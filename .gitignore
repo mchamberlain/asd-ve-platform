@@ -1,10 +1,16 @@
 3rdparty
 Myoushu/doc
+redist
 temp
-config
 Resources
+dist
+nbproject
 Resources.LICENSE.txt
 *.jar
+*.7z
+ubuntu_requires.txt
+deps.txt
+Myoushu/Samples/MyoushuJava/SampleCubes/src/TestTask.java
 
 # Compiled Object files
 *.slo
